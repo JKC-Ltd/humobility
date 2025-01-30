@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SensorModelController;
+use App\Http\Controllers\SensorTypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,15 +16,20 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/locations', function () {
-        return view('pages/configurations.locations.index');
-    });
-    Route::get('/locations/create', function () {
-        return view('pages/configurations.locations.create');
-    });
+    Route::resource('locations', LocationController::class);
+    Route::resource('sensorModels', SensorModelController::class);
+    Route::resource('sensorTypes', SensorTypeController::class);
+
+    // Route::get('/locations', function () {
+    //     return view('pages/configurations.locations.index');
+    // });
+    // Route::get('/locations/create', function () {
+    //     return view('pages/configurations.locations.create');
+    // });
     Route::get('/gateways', function () {
         return view('pages/configurations.gateways.index');
     });
+
     Route::get('/gateways/create', function () {
         return view('pages/configurations.gateways.create');
     });

@@ -83,7 +83,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/locations" class="nav-link">
+                    <a href="{{route('locations.index')}}" class="nav-link">
                         <i class="nav-icon fa fa-map-pin"></i>
                         <p>
                             Locations
@@ -116,13 +116,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/sensor_types" class="nav-link">
+                            <a href="{{route('sensorTypes.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/sensor_models" class="nav-link">
+                            <a href="{{route('sensorModels.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Model</p>
                             </a>
