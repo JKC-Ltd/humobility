@@ -37,7 +37,7 @@
                             <a href="{{ url()->previous() }}"><button type="button"
                                     class="btn btn-danger">Cancel</button></a>
                             <button type="submit"
-                                class="btn btn-primary">{{ isset($sensor_model) ? 'Update' : 'Submit' }}</button>
+                                class="btn btn-primary">{{ isset($sensor_model) ? 'Update' : 'Create' }}</button>
                         </div>
                     </div>
                 </form>

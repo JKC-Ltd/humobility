@@ -31,7 +31,7 @@
                         <div class="card-footer text-center">
                             <a href="{{ url()->previous() }}"><button type="button"
                                     class="btn btn-danger">Cancel</button></a>
-                            <button type="submit" class="btn btn-primary">{{ isset($location) ? 'Update' : 'Submit' }}</button>
+                            <button type="submit" class="btn btn-primary">{{ isset($location) ? 'Update' : 'Create' }}</button>
                         </div>
                     </div>
                 </form>
