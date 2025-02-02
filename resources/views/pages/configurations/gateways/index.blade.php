@@ -34,52 +34,38 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 4.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td> 4</td>
-                                    <td>X</td>
-                                    <td>X</td>
-                                    <td><div class="btn-group">
-                                        <a href="">
-                                            <button class="btn btn-primary btn-sm">
-                                                <i class="fa fa-eye"></i> View
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-default btn-sm">
-                                            <i class="fa fa-pen"></i> Edit
-                                        </button>
-                                        <button class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </button>
-                                    </div></td>
-                                </tr>
-                                <tr>
-                                    <td>Trident</td>
-                                    <td>Internet
-                                        Explorer 4.0
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td> 4</td>
-                                    <td>X</td>
-                                    <td>X</td>
-                                    <td><div class="btn-group">
-                                        <a href="">
-                                            <button class="btn btn-primary btn-sm">
-                                                <i class="fa fa-eye"></i> View
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-default btn-sm">
-                                            <i class="fa fa-pen"></i> Edit
-                                        </button>
-                                        <button class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </button>
-                                    </div></td>
-                                </tr>
+                                @foreach ($gateways as $gateway)
+                                    <tr>
+                                        <td>{{ $gateway->id }}</td>
+                                        <td>{{ $gateway->location->location_name }}</td>
+                                        <td>{{ $gateway->gateway }}</td>
+                                        <td>{{ $gateway->gateway_code }}</td>
+                                        <td>{{ $gateway->description }}</td>
+                                        <td>{{ $gateway->updated_at->diffForHumans() }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ route('gateways.edit', $gateway->id) }}">
+                                                    <button class="btn btn-primary btn-sm">
+                                                        <i class="fa fa-pen"></i> Edit
+                                                    </button>
+                                                </a>
+                                                <form action="{{ route('gateways.destroy', $gateway->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                    
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
+                                                </form>
+                                                {{-- <a href="{{ route('gateways.destroy', $gateway->id)}}">
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </button>
+                                                </a> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>

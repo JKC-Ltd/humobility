@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gateway;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class GatewayController extends Controller
@@ -12,15 +13,18 @@ class GatewayController extends Controller
      */
     public function index()
     {
-        //
+        $gateways = Gateway::all();
+        return view('pages.configurations.gateways.index', compact('gateways'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+    {   
+        $locations = Location::all();
+        // dd($locations);
+        return view('pages.configurations.gateways.create', compact('locations'));
     }
 
     /**
@@ -28,7 +32,19 @@ class GatewayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'location_id' => 'required|exists:locations,id',
+            'customer_code' => 'required',
+            'gateway' => 'required',
+            'gateway_code' => 'required|unique:gateways,gateway_code',
+            'description' => 'max:150',
+
+        ]);
+
+        $gateway = new Gateway($request->all());
+        $gateway->save();
+
+        return redirect()->route('gateways.index');
     }
 
     /**
@@ -44,7 +60,8 @@ class GatewayController extends Controller
      */
     public function edit(Gateway $gateway)
     {
-        //
+        $locations = Location::all();
+        return view('pages.configurations.gateways.create', compact('gateway'), compact('locations'));
     }
 
     /**
@@ -52,7 +69,16 @@ class GatewayController extends Controller
      */
     public function update(Request $request, Gateway $gateway)
     {
-        //
+        $request->validate([
+            'location_id' => 'required|exists:locations,id',
+            'gateway_code' => 'required|unique:gateways,gateway_code,' . $gateway->id,
+
+        ]);
+
+        $gateway->update($request->all());
+
+        return redirect()->route('gateways.index');
+
     }
 
     /**
@@ -60,6 +86,7 @@ class GatewayController extends Controller
      */
     public function destroy(Gateway $gateway)
     {
-        //
+        $gateway->delete();
+        return redirect()->route('gateways.index');
     }
 }
