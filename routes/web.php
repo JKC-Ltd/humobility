@@ -5,6 +5,7 @@ use App\Http\Controllers\GatewayController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SensorModelController;
 use App\Http\Controllers\SensorTypeController;
+use App\Http\Controllers\SensorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('locations', LocationController::class);
     Route::resource('gateways', GatewayController::class);
     Route::resource('sensorModels', SensorModelController::class);
+    Route::resource('sensors', SensorController::class);
     Route::resource('sensorTypes', SensorTypeController::class);
 
     // Route::get('/locations', function () {
