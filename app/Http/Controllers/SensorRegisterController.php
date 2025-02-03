@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\SensorRegister;
+use App\Models\SensorType;
+use App\Models\SensorModel;
 use Illuminate\Http\Request;
 
 class SensorRegisterController extends Controller
@@ -12,7 +14,9 @@ class SensorRegisterController extends Controller
      */
     public function index()
     {
-        //
+        $sensorRegisters = SensorRegister::all();
+
+        return view('pages.configurations.sensorRegisters.index', compact('sensorRegisters'));
     }
 
     /**
@@ -20,7 +24,11 @@ class SensorRegisterController extends Controller
      */
     public function create()
     {
-        //
+        $sensorTypes = SensorType::all();
+        $sensorModels = SensorModel::all();
+
+        return view('pages.configurations.sensorRegisters.create', compact('sensorTypes', 'sensorModels'));
+
     }
 
     /**
@@ -28,7 +36,18 @@ class SensorRegisterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'sensor_model_id' => 'required',
+            'sensor_type_id' => 'required', 
+            'sensor_reg_address' => 'required|string',              
+        ]);
+
+        $sensorRegister = new SensorRegister($request->all());
+        
+        $sensorRegister->save();
+
+        return redirect()->route('sensorRegisters.index')->with('success', 'Sensor Register created successfully.');
     }
 
     /**
@@ -44,7 +63,10 @@ class SensorRegisterController extends Controller
      */
     public function edit(SensorRegister $sensorRegister)
     {
-        //
+        $sensorTypes = SensorType::all();
+        $sensorModels = SensorModel::all();
+
+        return view('pages.configurations.sensorRegisters.create', compact('sensorRegister','sensorTypes', 'sensorModels'));
     }
 
     /**
@@ -52,7 +74,9 @@ class SensorRegisterController extends Controller
      */
     public function update(Request $request, SensorRegister $sensorRegister)
     {
-        //
+        $sensorRegister->update($request->all());
+
+        return redirect()->route('sensorRegisters.index')->with('success', 'Location updated successfully.');
     }
 
     /**
