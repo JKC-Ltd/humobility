@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SensorModelController;
 use App\Http\Controllers\SensorTypeController;
 use App\Http\Controllers\SensorController;
+use App\Http\Controllers\SensorRegisterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,10 +20,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
 
     Route::resource('locations', LocationController::class);
-    Route::resource('gateways', GatewayController::class);
     Route::resource('sensorModels', SensorModelController::class);
-    Route::resource('sensors', SensorController::class);
     Route::resource('sensorTypes', SensorTypeController::class);
+    Route::resource('sensorRegisters', SensorRegisterController::class);
+
 
     // Route::get('/locations', function () {
     //     return view('pages/configurations.locations.index');
@@ -30,13 +31,13 @@ Route::middleware('auth')->group(function () {
     // Route::get('/locations/create', function () {
     //     return view('pages/configurations.locations.create');
     // });
-    // Route::get('/gateways', function () {
-    //     return view('pages/configurations.gateways.index');
-    // });
+    Route::get('/gateways', function () {
+        return view('pages/configurations.gateways.index');
+    });
 
-    // Route::get('/gateways/create', function () {
-    //     return view('pages/configurations.gateways.create');
-    // });
+    Route::get('/gateways/create', function () {
+        return view('pages/configurations.gateways.create');
+    });
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
