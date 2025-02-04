@@ -1,7 +1,6 @@
 <x-app-layout>
     <x-slot name="importedLinks">
         @include('includes.datatables-links')
-        <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     </x-slot>
     <x-slot name="pageTitle">
         Sensor Models
@@ -39,7 +38,7 @@
                                         <td>{{ $sensor_model->id }}</td>
                                         <td>{{ $sensor_model->sensor_model }}</td>
                                         <td>{{ $sensor_model->sensor_brand }}</td>
-                                        <td>{{ $sensor_model->updated_at->diffForHumans() }}</td>
+                                        <td>{{ $sensor_model->updated_at }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{{ route('sensorModels.edit', $sensor_model->id) }}">
@@ -47,7 +46,9 @@
                                                         <i class="fa fa-pen"></i> Edit
                                                     </button>
                                                 </a>
-                                                <button class="btn btn-danger btn-sm">
+                                                <button type="button" class="btn btn-danger btn-sm delete-data-info"
+                                                    data-name="{{ $sensor_model->sensor_model }}"
+                                                    data-id="{{ $sensor_model->id }}" data-url="sensorModels/destroy">
                                                     <i class="fa fa-trash"></i> Delete
                                                 </button>
                                             </div>
@@ -64,7 +65,8 @@
     <x-slot name="importedScripts">
         @include('includes.datatables-scripts')
         <script src="{{ asset('assets/js/datatables.js') }}"></script>
-        <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ asset('./assets/js/sweetalert-delete.js') }}"></script>
         <script>
             $(function() {
                 var Toast = Swal.mixin({

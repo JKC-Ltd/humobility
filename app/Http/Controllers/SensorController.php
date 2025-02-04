@@ -9,6 +9,8 @@ use App\Models\SensorRegister;
 use App\Models\SensorType;
 use App\Models\SensorModel;
 use Illuminate\Http\Request;
+use Auth;
+use Response;
 
 class SensorController extends Controller
 {
@@ -102,9 +104,15 @@ class SensorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sensor $sensor)
+    public function destroy(Request $request)
     {
+  
+  
+        $id                     = $request->id;
+        $sensor               = $sensor = Sensor::findOrFail($id);       
+        $sensor->save();
         $sensor->delete();
-        return redirect()->route('sensors.index');
+
+        return Response::json($sensor);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\SensorRegister;
 use App\Models\SensorType;
 use App\Models\SensorModel;
 use Illuminate\Http\Request;
+use Response;
 
 class SensorRegisterController extends Controller
 {
@@ -36,7 +37,6 @@ class SensorRegisterController extends Controller
      */
     public function store(Request $request)
     {
-
         $validated = $request->validate([
             'sensor_model_id' => 'required',
             'sensor_type_id' => 'required', 
@@ -82,8 +82,13 @@ class SensorRegisterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SensorRegister $sensorRegister)
+    public function destroy(Request $request)
     {
-        //
+        $id                         = $request->id;
+        $sensorRegister                 = $sensorRegister = SensorRegister::findOrFail($id);       
+        $sensorRegister->save();
+        $sensorRegister->delete();
+
+        return Response::json($sensorRegister);
     }
 }

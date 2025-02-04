@@ -47,21 +47,19 @@
                                         <td>{{ $sensor->sensorRegister->sensorModel->sensor_model }}</td>
                                         <td>{{ $sensor->description }}</td>
                                         <td>
-                                            <form action="{{ route('sensors.destroy', $sensor->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <div class="btn-group">
-                                                    <a href="{{ route('sensors.edit', $sensor->id) }}">
-                                                        <button class="btn btn-primary btn-sm">
-                                                            <i class="fa fa-pen"></i> Edit
-                                                        </button>
-                                                    </a>
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-trash"></i> Delete
+                                            <div class="btn-group">
+                                                <a href="{{ route('sensors.edit', $sensor->id) }}">
+                                                    <button class="btn btn-primary btn-sm">
+                                                        <i class="fa fa-pen"></i> Edit
                                                     </button>
-                                                </div>
-                                            </form>
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-sm delete-data-info"
+                                                    data-name="{{ $sensor->slave_address }}"
+                                                    data-id="{{ $sensor->id }}"
+                                                    data-url="sensors/destroy">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -76,5 +74,7 @@
     <x-slot name="importedScripts">
         @include('includes.datatables-scripts')
         <script src="{{ asset('assets/js/datatables.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ asset('./assets/js/sweetalert-delete.js') }}"></script>
     </x-slot>
 </x-app-layout>

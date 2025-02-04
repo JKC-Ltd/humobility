@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use Illuminate\Http\Request;
-
+use Response;
 class LocationController extends Controller
 {
     /**
@@ -75,8 +75,13 @@ class LocationController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Location $location)
+    public function destroy(Request $request)
     {
-        //
+        $id                     = $request->id;
+        $location                = $location = Location::findOrFail($id);       
+        $location->save();
+        $location->delete();
+
+        return Response::json($location);
     }
 }

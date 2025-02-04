@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SensorType;
 use Illuminate\Http\Request;
+use Response;
 
 class SensorTypeController extends Controller
 {
@@ -68,8 +69,14 @@ class SensorTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SensorType $sensorType)
+    public function destroy(Request $request)
     {
-        //
+        
+        $id                         = $request->id;
+        $sensorType                 = $sensorType = SensorType::findOrFail($id);       
+        $sensorType->save();
+        $sensorType->delete();
+
+        return Response::json($sensorType);
     }
 }

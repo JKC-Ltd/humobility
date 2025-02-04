@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gateway;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Response;
 
 class GatewayController extends Controller
 {
@@ -85,9 +86,13 @@ class GatewayController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Gateway $gateway)
+    public function destroy(Request $request)
     {
+       
+        $id                     = $request->id;
+        $gateway                = $gateway = Gateway::findOrFail($id);       
+        $gateway->save();
         $gateway->delete();
-        return redirect()->route('gateways.index');
+        return Response::json($gateway);
     }
 }
