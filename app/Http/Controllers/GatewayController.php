@@ -13,7 +13,8 @@ class GatewayController extends Controller
      */
     public function index()
     {
-        $gateways = Gateway::all();
+        $gateways = Gateway::all() ?? collect();
+        
         return view('pages.configurations.gateways.index', compact('gateways'));
     }
 

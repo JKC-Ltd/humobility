@@ -48,7 +48,7 @@
                                                     </button>
                                                 </a> --}}
                                                 <a href="{{ route('locations.edit', $location->id) }}">
-                                                    <button class="btn btn-default btn-sm">
+                                                    <button class="btn btn-primary btn-sm">
                                                         <i class="fa fa-pen"></i> Edit
                                                     </button>
                                                 </a>

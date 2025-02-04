@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('sensorModels', SensorModelController::class);
     Route::resource('sensorTypes', SensorTypeController::class);
     Route::resource('sensorRegisters', SensorRegisterController::class);
+    Route::resource('sensors', SensorController::class);
+    Route::resource('gateways', GatewayController::class);
 
 
     // Route::get('/locations', function () {
@@ -31,13 +33,13 @@ Route::middleware('auth')->group(function () {
     // Route::get('/locations/create', function () {
     //     return view('pages/configurations.locations.create');
     // });
-    Route::get('/gateways', function () {
-        return view('pages/configurations.gateways.index');
-    });
+    // Route::get('/gateways', function () {
+    //     return view('pages/configurations.gateways.index');
+    // });
 
-    Route::get('/gateways/create', function () {
-        return view('pages/configurations.gateways.create');
-    });
+    // Route::get('/gateways/create', function () {
+    //     return view('pages/configurations.gateways.create');
+    // });
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

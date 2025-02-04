@@ -41,27 +41,27 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $sensor->slave_address }}</td>
                                         <td>{{ $sensor->location->location_name }}</td>
-                                        <td>{{ $sensor->gateway->gateway_code }}</td>                                     
-                                         <td>{{ $sensor->sensorRegister->sensorType->sensor_type_code}}</td></td>    
-                                        <td>{{ $sensor->sensorRegister->sensorModel->sensor_model}}</td>                                 
+                                        <td>{{ $sensor->gateway->gateway_code }}</td>
+                                        <td>{{ $sensor->sensorRegister->sensorType->sensor_type_code }}</td>
+                                        </td>
+                                        <td>{{ $sensor->sensorRegister->sensorModel->sensor_model }}</td>
                                         <td>{{ $sensor->description }}</td>
                                         <td>
-                                            <div class="btn-group">
-                                                <a href="{{ route('sensors.edit', $sensor->id) }}">
-                                                    <button class="btn btn-primary btn-sm">
-                                                        <i class="fa fa-pen"></i> Edit
-                                                    </button>
-                                                </a>
-                                                <form action="{{ route('sensors.destroy', $sensor->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
+                                            <form action="{{ route('sensors.destroy', $sensor->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
 
+                                                <div class="btn-group">
+                                                    <a href="{{ route('sensors.edit', $sensor->id) }}">
+                                                        <button class="btn btn-primary btn-sm">
+                                                            <i class="fa fa-pen"></i> Edit
+                                                        </button>
+                                                    </a>
                                                     <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash"></i> Delete
                                                     </button>
-                                                </form>
-                                            </div>
+                                                </div>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -44,13 +44,8 @@
                                         <td>{{ $sensorRegister->updated_at->diffForHumans() }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                {{-- <a href="">
-                                                    <button class="btn btn-primary btn-sm">
-                                                        <i class="fa fa-eye"></i> View
-                                                    </button>
-                                                </a> --}}
                                                 <a href="{{ route('sensorRegisters.edit', $sensorRegister->id) }}">
-                                                    <button class="btn btn-default btn-sm">
+                                                    <button class="btn btn-primary btn-sm">
                                                         <i class="fa fa-pen"></i> Edit
                                                     </button>
                                                 </a>

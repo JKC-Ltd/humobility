@@ -15,7 +15,8 @@
                         </div>
                         <div class="right w-50 text-right">
                             <a href="/gateways/create">
-                                <button class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i> &nbsp;Create New Gateway</button>   
+                                <button class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i>
+                                    &nbsp;Create New Gateway</button>
                             </a>
                         </div>
                     </div>
@@ -34,50 +35,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($gateways as $gateway)
-                                    <tr>
-                                        <td>{{ $gateway->id }}</td>
-                                        <td>{{ $gateway->location->location_name }}</td>
-                                        <td>{{ $gateway->gateway }}</td>
-                                        <td>{{ $gateway->gateway_code }}</td>
-                                        <td>{{ $gateway->description }}</td>
-                                        <td>{{ $gateway->updated_at->diffForHumans() }}</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a href="{{ route('gateways.edit', $gateway->id) }}">
-                                                    <button class="btn btn-primary btn-sm">
-                                                        <i class="fa fa-pen"></i> Edit
-                                                    </button>
-                                                </a>
-                                                <form action="{{ route('gateways.destroy', $gateway->id) }}" method="POST">
+                                @if (isset($gateways) && $gateways->isNotEmpty())
+                                    @foreach ($gateways as $gateway)
+                                        <tr>
+                                            <td>{{ $gateway->id }}</td>
+                                            <td>{{ $gateway->location->location_name }}</td>
+                                            <td>{{ $gateway->gateway }}</td>
+                                            <td>{{ $gateway->gateway_code }}</td>
+                                            <td>{{ $gateway->description }}</td>
+                                            <td>{{ $gateway->updated_at->diffForHumans() }}</td>
+                                            <td>
+                                                <form action="{{ route('gateways.destroy', $gateway->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                    
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-trash"></i> Delete
-                                                    </button>
+                                                    <div class="btn-group">
+                                                        <a href="{{ route('gateways.edit', $gateway->id) }}">
+                                                            <button class="btn btn-primary btn-sm" type="button">
+                                                                <i class="fa fa-pen"></i> Edit
+                                                            </button>
+                                                        </a>
+
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <i class="fa fa-trash"></i> Delete
+                                                        </button>
+                                                    </div>
                                                 </form>
-                                                {{-- <a href="{{ route('gateways.destroy', $gateway->id)}}">
-                                                    <button class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-trash"></i> Delete
-                                                    </button>
-                                                </a> --}}
-                                            </div>
-                                        </td>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="7" class="text-center">No gateways found.</td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Location</th>
-                                    <th>Gateway</th>
-                                    <th>Gateway Code</th>
-                                    <th>Description</th>
-                                    <th>Last Update</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
