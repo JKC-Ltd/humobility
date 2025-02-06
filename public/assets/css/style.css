@@ -10,7 +10,9 @@
     color: red;
     font-size: 15px; 
 }
-
+.delete-name{
+    color: red;
+}
 /* SIDE BAR */
 .brand-link {
     background: #fff;
