@@ -54,5 +54,6 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div> --}}
+        
     </form>
 </x-guest-layout>
