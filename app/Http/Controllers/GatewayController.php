@@ -46,7 +46,7 @@ class GatewayController extends Controller
         $gateway = new Gateway($request->all());
         $gateway->save();
 
-        return redirect()->route('gateways.index');
+        return redirect()->route('gateways.index')->with('success', 'Gateway created successfully.');
     }
 
     /**
@@ -79,7 +79,7 @@ class GatewayController extends Controller
 
         $gateway->update($request->all());
 
-        return redirect()->route('gateways.index');
+        return redirect()->route('gateways.index')->with('success', 'Gateway updated successfully.');
 
     }
 

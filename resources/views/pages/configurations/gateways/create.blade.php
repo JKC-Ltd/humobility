@@ -21,10 +21,10 @@
                                         <select
                                             class="form-control select2bs4 @error('location_id') input-error @enderror"
                                             name="location_id" style="width: 100%;">
-                                            <option value="">SELECT LOCATION</option>
+                                            <option value="" selected disabled>SELECT LOCATION</option>
                                             @foreach ($locations as $location)
                                                 <option value="{{ $location->id }}"
-                                                    {{ isset($gateway) ? 'selected' : '' }}>
+                                                    {{ isset($gateway) ? ($location->id == $gateway->location_id ? 'selected' : '')  : '' }}>
                                                     {{ $location->location_name }}
                                                 </option>
                                             @endforeach
