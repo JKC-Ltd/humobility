@@ -7,6 +7,7 @@ use App\Models\SensorType;
 use App\Models\SensorModel;
 use Illuminate\Http\Request;
 use Response;
+use Illuminate\Validation\Rule;
 
 class SensorRegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class SensorRegisterController extends Controller
         $sensorTypes = SensorType::all();
         $sensorModels = SensorModel::all();
 
-        return view('pages.configurations.sensorRegisters.create', compact('sensorTypes', 'sensorModels'));
+        return view('pages.configurations.sensorRegisters.form', compact('sensorTypes', 'sensorModels'));
 
     }
 
@@ -37,11 +38,7 @@ class SensorRegisterController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'sensor_model_id' => 'required',
-            'sensor_type_id' => 'required', 
-            'sensor_reg_address' => 'required|string',              
-        ]);
+        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
 
         $sensorRegister = new SensorRegister($request->all());
         
@@ -66,7 +63,7 @@ class SensorRegisterController extends Controller
         $sensorTypes = SensorType::all();
         $sensorModels = SensorModel::all();
 
-        return view('pages.configurations.sensorRegisters.create', compact('sensorRegister','sensorTypes', 'sensorModels'));
+        return view('pages.configurations.sensorRegisters.form', compact('sensorRegister','sensorTypes', 'sensorModels'));
     }
 
     /**
@@ -74,6 +71,7 @@ class SensorRegisterController extends Controller
      */
     public function update(Request $request, SensorRegister $sensorRegister)
     {
+        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
         $sensorRegister->update($request->all());
 
         return redirect()->route('sensorRegisters.index')->with('success', 'Location updated successfully.');
@@ -90,5 +88,27 @@ class SensorRegisterController extends Controller
         $sensorRegister->delete();
 
         return Response::json($sensorRegister);
+    }
+    public function formRule(){
+        return [
+            'sensor_model_id' => 'required',
+            'sensor_type_id' => 'required', 
+            'sensor_reg_address' => 'required|string',              
+        ];
+    }
+
+    public function errorMessage(){
+        return [
+            'sensor_model_id.required' => 'Sensor Model is required',
+            'sensor_type_id.required' => 'Sensor Type is required',
+            'sensor_reg_address.required' => 'Sensor Register Address is required',
+        ];
+    }
+    public function changeAttributes(){
+        return [
+            'sensor_model_id' => 'Sensor Model',
+            'sensor_type_id' => 'Sensor Type',
+            'sensor_reg_address' => 'Sensor Register Address',
+        ];
     }
 }

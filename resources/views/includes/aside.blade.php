@@ -131,6 +131,21 @@
                     </ul>
                 </li>
             </ul>
+            <ul class="nav nav-pills nav-sidebar flex-column " data-widget="treeview" role="menu"
+            data-accordion="false">
+            <li class="nav-item align-items-end">      
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf    
+                    <a class="nav-link" href="route('logout')"
+                        onclick="event.preventDefault();
+                                this.closest('form').submit();">
+                        <i class="far fa-share-square nav-icon"></i>
+                        <p>Logout</p>
+                    </a>
+                </form>
+    
+            </li>
+            </ul>
         </nav>
     </div>
 </aside>

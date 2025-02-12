@@ -20,11 +20,11 @@
                                         <label>Location</label>
                                         <select
                                             class="form-control select2bs4 @error('location_id') input-error @enderror"
-                                            name="location_id" style="width: 100%;">
+                                            name="location_id" style="width: 100%;" required>
                                             <option value="" selected disabled>SELECT LOCATION</option>
                                             @foreach ($locations as $location)
                                                 <option value="{{ $location->id }}"
-                                                    {{ isset($gateway) ? ($location->id == $gateway->location_id ? 'selected' : '')  : '' }}>
+                                                    {{ isset($gateway) ? ($location->id == $gateway->location_id ? 'selected' : '') : '' }}>
                                                     {{ $location->location_name }}
                                                 </option>
                                             @endforeach
@@ -35,18 +35,20 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="customerCode">Customer Code</label>
-                                        <input type="text" name="customer_code" class="form-control @error('customer_code') input-error @enderror"
+                                        <input type="text" name="customer_code"
+                                            class="form-control @error('customer_code') input-error @enderror"
                                             id="customerCode" placeholder="Customer Code"
-                                            value="{{ isset($gateway) ? $gateway->customer_code : '' }}">
+                                            value="{{ isset($gateway) ? $gateway->customer_code : '' }}" required>
                                         @error('customer_code')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label for="gateway">Gateway</label>
-                                        <input type="text" name="gateway" class="form-control @error('gateway') input-error @enderror" id="gateway"
+                                        <input type="text" name="gateway"
+                                            class="form-control @error('gateway') input-error @enderror" id="gateway"
                                             placeholder="Gateway"
-                                            value="{{ isset($gateway) ? $gateway->gateway : '' }}">
+                                            value="{{ isset($gateway) ? $gateway->gateway : '' }}" required>
                                         @error('gateway')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
@@ -56,7 +58,7 @@
                                         <input type="text" name="gateway_code"
                                             class="form-control @error('gateway_code') input-error @enderror"
                                             id="gatewayCode" placeholder="Gateway Code"
-                                            value="{{ isset($gateway) ? $gateway->gateway_code : '' }}">
+                                            value="{{ isset($gateway) ? $gateway->gateway_code : '' }}" required>
                                         @error('gateway_code')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
@@ -65,7 +67,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea class="form-control @error('description') input-error @enderror" name="description" id="description" placeholder="Description">{{ isset($gateway) ? $gateway->description : '' }}</textarea>
+                                        <textarea class="form-control @error('description') input-error @enderror" name="description" id="description" required
+                                            placeholder="Description">{{ isset($gateway) ? $gateway->description : '' }}</textarea>
                                         @error('description')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror

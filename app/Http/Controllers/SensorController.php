@@ -20,7 +20,7 @@ class SensorController extends Controller
     public function index()
     {
         $sensor = Sensor::all();
-        return view('pages.sensors.index')
+        return view('pages.configurations.sensors.index')
         ->with('sensors', $sensor);
     }
 
@@ -31,8 +31,10 @@ class SensorController extends Controller
     {
         $location =  Location::all();
         $gateway =  Gateway::all();
-        $SensorRegister =  SensorRegister::all();
-        return view('pages.sensors.form')
+        $SensorRegister =  SensorRegister::leftJoin('sensors', 'sensor_registers.id', '=', 'sensors.sensor_register_id')
+        ->whereNull('sensors.id')
+        ->get();
+        return view('pages.configurations.sensors.form')
         ->with('locations', $location)
         ->with('gateways', $gateway)
         ->with('sensorRegisters', $SensorRegister);
@@ -43,13 +45,7 @@ class SensorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'slave_address' => 'required',
-            'description' => 'required',
-            'location_id' => 'required',
-            'gateway_id' => 'required',
-            'sensor_register_id' => 'required',
-        ]);
+        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
 
         $sensor = new Sensor($request->all());
         $sensor->save();
@@ -60,6 +56,7 @@ class SensorController extends Controller
 
     /**
      * Display the specified resource.
+
      */
     public function show(Sensor $sensor)
     {
@@ -75,7 +72,7 @@ class SensorController extends Controller
        $location =  Location::all();
        $gateway =  Gateway::all();
        $SensorRegister =  SensorRegister::all();
-        return view('pages.sensors.form')
+        return view('pages.configurations.sensors.form')
         ->with('sensor', $sensor)
         ->with('locations', $location)
         ->with('gateways', $gateway)
@@ -89,13 +86,7 @@ class SensorController extends Controller
     public function update(Request $request, Sensor $sensor)
     {
 
-        $request->validate([
-            'slave_address' => 'required',
-            'description' => 'required',
-            'location_id' => 'required',
-            'gateway_id' => 'required',
-            'sensor_register_id' => 'required',
-        ]);
+     $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
         $sensor->update($request->all());
         return redirect()->route('sensors.index');
 
@@ -107,12 +98,42 @@ class SensorController extends Controller
     public function destroy(Request $request)
     {
   
-  
+      
         $id                     = $request->id;
         $sensor               = $sensor = Sensor::findOrFail($id);       
         $sensor->save();
         $sensor->delete();
 
         return Response::json($sensor);
+    }
+
+    public function formRule(){
+        return [
+            'slave_address' => ['required','string','min:3','max:200'],
+            'description' => ['required','string','min:3','max:500'],
+            'location_id' => 'required',
+            'gateway_id' => 'required',
+            'sensor_register_id' => 'required',
+        ];
+    }
+
+    public function errorMessage(){
+        return [
+            'slave_address.required' => 'Slave Address is required',
+            'description.required' => 'Description is required',
+            'location_id.required' => 'Location is required',
+            'gateway_id.required' => 'Gateway is required',
+            'sensor_register_id.required' => 'Sensor Register is required',
+        ];
+    }
+
+    public function changeAttributes(){
+        return [
+            'slave_address' => 'Slave Address',
+            'description' => 'Description',
+            'location_id' => 'Location',
+            'gateway_id' => 'Gateway',
+            'sensor_register_id' => 'Sensor Register',
+        ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SensorModel;
 use Illuminate\Http\Request;
 use Response;
+use Illuminate\Validation\Rule;
 
 class SensorModelController extends Controller
 {
@@ -24,7 +25,7 @@ class SensorModelController extends Controller
      */
     public function create()
     {
-        return view('pages.configurations.sensorModels.create');
+        return view('pages.configurations.sensorModels.form');
 
     }
 
@@ -33,6 +34,7 @@ class SensorModelController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
         $sensor_model = new SensorModel($request->all());
         $sensor_model->save();
 
@@ -52,7 +54,7 @@ class SensorModelController extends Controller
      */
     public function edit(SensorModel $sensorModel)
     {
-        return view('pages.configurations.sensorModels.create', compact('sensor_model'));
+        return view('pages.configurations.sensorModels.form', compact('sensorModel'));
     }
 
     /**
@@ -60,7 +62,10 @@ class SensorModelController extends Controller
      */
     public function update(Request $request, SensorModel $sensorModel)
     {
-        //
+        $request->validate(self::formRule($sensorModel->id),self::errorMessage(), self::changeAttributes());
+        $sensorModel->update($request->all());
+
+        return redirect()->route('sensorModels.index')->with('success', 'Sensor Model updated successfully.');
     }
 
     /**
@@ -75,5 +80,23 @@ class SensorModelController extends Controller
         $sensorModel->delete();
 
         return Response::json($sensorModel);
+    }
+    public function formRule($id = false){
+        return [
+            'sensor_model' => ['required', 'string','min:3', 'max:200',Rule::unique('sensor_models')->ignore($id ? $id :'')],
+            'sensor_brand' => ['required', 'string','min:3' ,'max:200'],        
+        ];
+    }
+    public function errorMessage(){
+        return [
+            'sensor_model.required' => 'Sensor Model is required',
+            'sensor_brand.required' => 'Sensor Brand is required',
+        ];
+    }
+    public function changeAttributes(){
+        return [
+            'sensor_model' => 'Sensor Model',
+            'sensor_brand' => 'Sensor Brand',
+        ];
     }
 }

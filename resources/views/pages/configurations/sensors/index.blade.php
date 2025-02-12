@@ -32,6 +32,7 @@
                                     <th>Sensor Type</th>
                                     <th>Sensor Model</th>
                                     <th>Description</th>
+                                    <th>Last Update</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -46,6 +47,7 @@
                                         </td>
                                         <td>{{ $sensor->sensorRegister->sensorModel->sensor_model }}</td>
                                         <td>{{ $sensor->description }}</td>
+                                        <td>{{ $sensor->updated_at }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{{ route('sensors.edit', $sensor->id) }}">

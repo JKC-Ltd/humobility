@@ -41,7 +41,7 @@
                                         <td>{{ $sensor_model->updated_at }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="{{ route('sensorModels.edit', $sensor_model->id) }}">
+                                                <a href="{{ route('sensorModels.edit', $sensor_model) }}">
                                                     <button class="btn btn-primary btn-sm">
                                                         <i class="fa fa-pen"></i> Edit
                                                     </button>

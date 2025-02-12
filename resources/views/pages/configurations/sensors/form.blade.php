@@ -1,14 +1,13 @@
 <x-app-layout>
     <x-slot name="pageTitle">
-        {{ isset($sensor) ? 'Edit ' : 'Create ' }} Sensors 
+        {{ isset($sensor) ? 'Edit ' : 'Create ' }} Sensors
     </x-slot>
     <x-slot name="content">
         <div class="row">
             <div class="col-12">
                 <div class="card card-primary card-outline">
-                    <form
-                        action="{{ isset($sensor) ? route('sensors.update', $sensor->id) : route('sensors.store') }}"
-                        method="POST">  
+                    <form action="{{ isset($sensor) ? route('sensors.update', $sensor->id) : route('sensors.store') }}"
+                        method="POST">
                         {{-- action="{{ isset($sensor) ? route('gateways.update', $sensor->id) : route('gateways.store') }}"
                         method="POST"> --}}
                         @csrf
@@ -20,9 +19,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="slave_address">Slave Address</label>
-                                        <input type="text" name="slave_address" class="form-control @error('slave_address') input-error @enderror"
+                                        <input type="text" name="slave_address"
+                                            class="form-control @error('slave_address') input-error @enderror"
                                             id="slave_address" placeholder="Slave Address"
                                             value="{{ isset($sensor) ? $sensor->slave_address : '' }}">
+                                        @error('slave_address')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
 
                                         <label>Location</label>
                                         <select
@@ -31,7 +34,7 @@
                                             <option value="">SELECT LOCATION</option>
                                             @foreach ($locations as $location)
                                                 <option value="{{ $location->id }}"
-                                                    {{ isset($sensor) && $sensor->location_id  == $location->id ? 'selected' : ''  }}>
+                                                    {{ isset($sensor) && $sensor->location_id == $location->id ? 'selected' : '' }}>
                                                     {{ $location->location_name }}
                                                 </option>
                                             @endforeach
@@ -47,7 +50,7 @@
                                             <option value="">SELECT GATEWAY</option>
                                             @foreach ($gateways as $gateway)
                                                 <option value="{{ $gateway->id }}"
-                                                    {{ isset($sensor) && $sensor->gateway_id == $gateway->id ? 'selected' : ''  }}>
+                                                    {{ isset($sensor) && $sensor->gateway_id == $gateway->id ? 'selected' : '' }}>
                                                     {{ $gateway->gateway_code }}
                                                 </option>
                                             @endforeach
@@ -63,7 +66,7 @@
                                             <option value="">SELECT SENSOR REGISTER</option>
                                             @foreach ($sensorRegisters as $sensorRegister)
                                                 <option value="{{ $sensorRegister->id }}"
-                                                    {{ isset($sensor) && $sensor->sensor_register_id  == $sensorRegister->id ? 'selected' : '' }}>
+                                                    {{ isset($sensor) && $sensor->sensor_register_id == $sensorRegister->id ? 'selected' : '' }}>
                                                     {{ $sensorRegister->sensor_reg_address }}
                                                 </option>
                                             @endforeach
@@ -77,7 +80,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="description">Description</label>
-                                        <textarea class="form-control @error('description') input-error @enderror" name="description" id="description" placeholder="Description">{{ isset($sensor) ? $sensor->description : '' }}</textarea>
+                                        <textarea class="form-control @error('description') input-error @enderror" name="description" id="description"
+                                            placeholder="Description">{{ isset($sensor) ? $sensor->description : '' }}</textarea>
                                         @error('description')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror

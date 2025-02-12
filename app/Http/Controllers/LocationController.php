@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Response;
+use Illuminate\Validation\Rule;
 class LocationController extends Controller
 {
     /**
@@ -24,7 +25,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        return view('pages.configurations.locations.create');
+        return view('pages.configurations.locations.form');
     }
 
     /**
@@ -32,9 +33,7 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'location_code' => 'required|unique:locations,location_code',
-        ]);
+        $request->validate( self::formRule(),self::errorMessage(), self::changeAttributes());
 
         $location = new Location($request->all());
         $location->save();
@@ -55,7 +54,7 @@ class LocationController extends Controller
      */
     public function edit(Location $location)
     {
-        return view('pages.configurations.locations.create', compact('location'));
+        return view('pages.configurations.locations.form', compact('location'));
     }
 
     /**
@@ -63,9 +62,7 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
-        $request->validate([
-            'location_code' => 'required|unique:locations,location_code,' . $location->id,
-        ]);
+        $request->validate( self::formRule( $location->id),self::errorMessage(), self::changeAttributes());
 
         $location->update($request->all());
 
@@ -83,5 +80,27 @@ class LocationController extends Controller
         $location->delete();
 
         return Response::json($location);
+    }
+    public function formRule($id = false)
+    {
+        return [
+            'location_code' => ['required','string','min:3','max:200',Rule::unique('locations')->ignore($id ? $id : "")],
+            'location_name' => ['required','string','min:3','max:200']
+        ];
+    }
+    public function errorMessage()
+    {
+        return [
+            'location_code.required' => 'Location code is required',
+            'location_code.unique' => 'Location code already exists',
+            'location_name.required' => 'Location name is required'
+        ];
+    }
+    public function changeAttributes()
+    {
+        return [
+            'location_code' => 'Location Code',
+            'location_name' => 'Location Name'
+        ];
     }
 }
