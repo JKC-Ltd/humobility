@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Gateway;
 use App\Models\Location;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Validation\Rule;
@@ -36,9 +38,13 @@ class GatewayController extends Controller
     public function store(Request $request)
     {
         $request->validate( self::formRule(),self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
 
         $gateway = new Gateway($request->all());
         $gateway->save();
+        
+        (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'gateway_code');
 
         return redirect()->route('gateways.index')->with('success', 'Gateway created successfully.');
     }
@@ -66,7 +72,12 @@ class GatewayController extends Controller
     public function update(Request $request, Gateway $gateway)
     {
         $request->validate( self::formRule($gateway->id),self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
+
         $gateway->update($request->all());
+        
+        (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id, 'gateway_code');
 
         return redirect()->route('gateways.index')->with('success', 'Gateway updated successfully.');
 
@@ -78,10 +89,15 @@ class GatewayController extends Controller
     public function destroy(Request $request)
     {
        
+        DB::enableQueryLog();
+
         $id                     = $request->id;
         $gateway                = $gateway = Gateway::findOrFail($id);       
         $gateway->save();
         $gateway->delete();
+        
+        (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        
         return Response::json($gateway);
     }
 

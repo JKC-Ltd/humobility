@@ -8,7 +8,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>{{ $gateways->count() }}</h3>
+                        <h3>12</h3>
 
                         <p>Gateways</p>
                     </div>
@@ -23,7 +23,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ $sensors->count() }}</h3>
+                        <h3>12</h3>
 
                         <p>Sensors</p>
                     </div>
@@ -38,7 +38,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>{{ $users->count() }}</h3>
+                        <h3>12</h3>
 
                         <p>Users</p>
                     </div>
@@ -84,16 +84,6 @@
         </div>
 
         <div class="row">
-            <section class="col-12 connectedSortable">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="monthlyEnergyConsumption" style="height: 520px; width: 100%;"></div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        {{-- <div class="row">
             <div class="col-12">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
@@ -124,11 +114,11 @@
                 </div>
                 <!-- /.card -->
             </div>
-        </div> --}}
+        </div>
     </x-slot>
     <x-slot name="importedScripts">
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-        <script src="{{ asset('assets/js/eneryConsumption.js') }}"></script>
+        <script src="{{ asset('assets/js/charts.js') }}"></script>
     </x-slot>
 </x-app-layout>

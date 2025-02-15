@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="importedLinks">
         @include('includes.datatables-links')
+        <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     </x-slot>
     <x-slot name="pageTitle">
         Sensor Registers

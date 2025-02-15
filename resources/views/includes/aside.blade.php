@@ -23,54 +23,32 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link active">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Dashboard
+                            Energy Consumption
                         </p>
                     </a>
                 </li>
-                {{-- <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                <li class="nav-item">
+                    <a href="{{ route('activePower.index') }}" class="nav-link {{ request()->routeIs('activePower.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Dashboard
-                            <i class="right fas fa-angle-left"></i>
+                            Active Power
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="./index.html" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v1</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./index2.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v2</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="./index3.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li> --}}
-                {{-- <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('voltageCurrent.index') }}" class="nav-link {{ request()->routeIs('voltageCurrent.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Widgets
-                            <span class="right badge badge-danger">New</span>
+                            Voltage & Current
                         </p>
                     </a>
-                </li> --}}
+                </li>
                 <li class="nav-header">CONFIGURATIONS</li>
                 <li class="nav-item">
-                    <a href="/users" class="nav-link">
+                    <a href="/users" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-users"></i>
                         <p>
                             Users
@@ -78,7 +56,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('locations.index') }}" class="nav-link">
+                    <a href="{{ route('locations.index') }}" class="nav-link {{ request()->routeIs('locations.index') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-map-pin"></i>
                         <p>
                             Locations
@@ -86,7 +64,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/gateways" class="nav-link">
+                    <a href="/gateways" class="nav-link {{ request()->is('gateways') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-hdd"></i>
                         <p>
                             Gateways
@@ -94,7 +72,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('sensors.index') }}" class="nav-link">
+                    <a href="{{ route('sensors.index') }}" class="nav-link {{ request()->routeIs('sensors.index') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-tablet"></i>
                         <p>
                             Sensors
@@ -111,19 +89,19 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('sensorTypes.index') }}" class="nav-link">
+                            <a href="{{ route('sensorTypes.index') }}" class="nav-link {{ request()->routeIs('sensorTypes.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Type</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('sensorModels.index') }}" class="nav-link">
+                            <a href="{{ route('sensorModels.index') }}" class="nav-link {{ request()->routeIs('sensorModels.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Model</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/sensorRegisters" class="nav-link">
+                            <a href="/sensorRegisters" class="nav-link {{ request()->is('sensorRegisters') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Register</p>
                             </a>

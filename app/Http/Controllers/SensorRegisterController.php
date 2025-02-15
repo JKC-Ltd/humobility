@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gateway;
 use App\Models\SensorRegister;
 use App\Models\SensorType;
 use App\Models\SensorModel;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Validation\Rule;
@@ -38,11 +41,19 @@ class SensorRegisterController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+
+        DB::enableQueryLog();
 
         $sensorRegister = new SensorRegister($request->all());
-        
+
         $sensorRegister->save();
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id);
+        }
 
         return redirect()->route('sensorRegisters.index')->with('success', 'Sensor Register created successfully.');
     }
@@ -63,7 +74,7 @@ class SensorRegisterController extends Controller
         $sensorTypes = SensorType::all();
         $sensorModels = SensorModel::all();
 
-        return view('pages.configurations.sensorRegisters.form', compact('sensorRegister','sensorTypes', 'sensorModels'));
+        return view('pages.configurations.sensorRegisters.form', compact('sensorRegister', 'sensorTypes', 'sensorModels'));
     }
 
     /**
@@ -71,8 +82,17 @@ class SensorRegisterController extends Controller
      */
     public function update(Request $request, SensorRegister $sensorRegister)
     {
-        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+
+        DB::enableQueryLog();
+
         $sensorRegister->update($request->all());
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id);
+        }
 
         return redirect()->route('sensorRegisters.index')->with('success', 'Location updated successfully.');
     }
@@ -82,29 +102,41 @@ class SensorRegisterController extends Controller
      */
     public function destroy(Request $request)
     {
-        $id                         = $request->id;
-        $sensorRegister                 = $sensorRegister = SensorRegister::findOrFail($id);       
+        // DB::enableQueryLog();
+
+        $id = $request->id;
+        $sensorRegister = $sensorRegister = SensorRegister::findOrFail($id);
         $sensorRegister->save();
         $sensorRegister->delete();
 
+        // $gateways = Gateway::all();
+
+        // foreach ($gateways as $key => $gateway) {
+        //     (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        // }
+
+
         return Response::json($sensorRegister);
     }
-    public function formRule(){
+    public function formRule()
+    {
         return [
             'sensor_model_id' => 'required',
-            'sensor_type_id' => 'required', 
-            'sensor_reg_address' => 'required|string',              
+            'sensor_type_id' => 'required',
+            'sensor_reg_address' => 'required|string',
         ];
     }
 
-    public function errorMessage(){
+    public function errorMessage()
+    {
         return [
             'sensor_model_id.required' => 'Sensor Model is required',
             'sensor_type_id.required' => 'Sensor Type is required',
             'sensor_reg_address.required' => 'Sensor Register Address is required',
         ];
     }
-    public function changeAttributes(){
+    public function changeAttributes()
+    {
         return [
             'sensor_model_id' => 'Sensor Model',
             'sensor_type_id' => 'Sensor Type',

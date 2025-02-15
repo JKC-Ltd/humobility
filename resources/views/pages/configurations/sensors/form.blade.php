@@ -22,7 +22,7 @@
                                         <input type="text" name="slave_address"
                                             class="form-control @error('slave_address') input-error @enderror"
                                             id="slave_address" placeholder="Slave Address"
-                                            value="{{ isset($sensor) ? $sensor->slave_address : '' }}">
+                                            value="{{ old('slave_address', isset($sensor) ? $sensor->slave_address : '') }}">
                                         @error('slave_address')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
@@ -34,7 +34,7 @@
                                             <option value="">SELECT LOCATION</option>
                                             @foreach ($locations as $location)
                                                 <option value="{{ $location->id }}"
-                                                    {{ isset($sensor) && $sensor->location_id == $location->id ? 'selected' : '' }}>
+                                                    {{ old('location_id', isset($sensor) && $sensor->location_id == $location->id ? 'selected' : '') }}>
                                                     {{ $location->location_name }}
                                                 </option>
                                             @endforeach
@@ -50,7 +50,7 @@
                                             <option value="">SELECT GATEWAY</option>
                                             @foreach ($gateways as $gateway)
                                                 <option value="{{ $gateway->id }}"
-                                                    {{ isset($sensor) && $sensor->gateway_id == $gateway->id ? 'selected' : '' }}>
+                                                    {{ old('gateway_id', isset($sensor) && $sensor->gateway_id == $gateway->id ? 'selected' : '') }}>
                                                     {{ $gateway->gateway_code }}
                                                 </option>
                                             @endforeach
@@ -66,7 +66,7 @@
                                             <option value="">SELECT SENSOR REGISTER</option>
                                             @foreach ($sensorRegisters as $sensorRegister)
                                                 <option value="{{ $sensorRegister->id }}"
-                                                    {{ isset($sensor) && $sensor->sensor_register_id == $sensorRegister->id ? 'selected' : '' }}>
+                                                    {{ old('sensor_register_id', isset($sensor) && $sensor->sensor_register_id == $sensorRegister->id ? 'selected' : '') }}>
                                                     {{ $sensorRegister->sensor_reg_address }}
                                                 </option>
                                             @endforeach
@@ -81,7 +81,7 @@
                                     <div class="form-group">
                                         <label for="description">Description</label>
                                         <textarea class="form-control @error('description') input-error @enderror" name="description" id="description"
-                                            placeholder="Description">{{ isset($sensor) ? $sensor->description : '' }}</textarea>
+                                            placeholder="Description">{{ old('description', isset($sensor) ? $sensor->description : '') }}</textarea>
                                         @error('description')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror

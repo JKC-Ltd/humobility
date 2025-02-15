@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gateway;
 use App\Models\SensorModel;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Validation\Rule;
@@ -34,9 +37,18 @@ class SensorModelController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(self::formRule(),self::errorMessage(), self::changeAttributes());
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+
+        DB::enableQueryLog();
+
         $sensor_model = new SensorModel($request->all());
         $sensor_model->save();
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'sensor_model');
+        }
 
         return redirect()->route('sensorModels.index')->with('success', 'Sensor Model created successfully.');
     }
@@ -62,8 +74,17 @@ class SensorModelController extends Controller
      */
     public function update(Request $request, SensorModel $sensorModel)
     {
-        $request->validate(self::formRule($sensorModel->id),self::errorMessage(), self::changeAttributes());
+        $request->validate(self::formRule($sensorModel->id), self::errorMessage(), self::changeAttributes());
+
+        DB::enableQueryLog();
+
         $sensorModel->update($request->all());
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'sensor_model');
+        }
 
         return redirect()->route('sensorModels.index')->with('success', 'Sensor Model updated successfully.');
     }
@@ -73,27 +94,37 @@ class SensorModelController extends Controller
      */
     public function destroy(Request $request)
     {
-        
-        $id                         = $request->id;
-        $sensorModel                = $sensorModel = SensorModel::findOrFail($id);       
+        DB::enableQueryLog();
+
+        $id = $request->id;
+        $sensorModel = $sensorModel = SensorModel::findOrFail($id);
         $sensorModel->save();
         $sensorModel->delete();
 
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        }
+
         return Response::json($sensorModel);
     }
-    public function formRule($id = false){
+    public function formRule($id = false)
+    {
         return [
-            'sensor_model' => ['required', 'string','min:3', 'max:200',Rule::unique('sensor_models')->ignore($id ? $id :'')],
-            'sensor_brand' => ['required', 'string','min:3' ,'max:200'],        
+            'sensor_model' => ['required', 'string', 'min:3', 'max:200', Rule::unique('sensor_models')->ignore($id ? $id : '')],
+            'sensor_brand' => ['required', 'string', 'min:3', 'max:200'],
         ];
     }
-    public function errorMessage(){
+    public function errorMessage()
+    {
         return [
             'sensor_model.required' => 'Sensor Model is required',
             'sensor_brand.required' => 'Sensor Brand is required',
         ];
     }
-    public function changeAttributes(){
+    public function changeAttributes()
+    {
         return [
             'sensor_model' => 'Sensor Model',
             'sensor_brand' => 'Sensor Brand',

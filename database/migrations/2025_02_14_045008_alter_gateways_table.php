@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sensor_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('description');
-            $table->string('sensor_type_code')->unique();
-            $table->string('sensor_type_parameter');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('gateways', function (Blueprint $table) {
+            $table->unique('gateway_code');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sensor_types');
+        Schema::table('gateways', function (Blueprint $table) {
+            //
+        });
     }
 };

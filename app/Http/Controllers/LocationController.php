@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gateway;
 use App\Models\Location;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Validation\Rule;
@@ -34,9 +37,18 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         $request->validate( self::formRule(),self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
 
         $location = new Location($request->all());
         $location->save();
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'location_code');
+        }
+
 
         return redirect()->route('locations.index')->with('success', 'Location created successfully.');
     }
@@ -63,8 +75,16 @@ class LocationController extends Controller
     public function update(Request $request, Location $location)
     {
         $request->validate( self::formRule( $location->id),self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
 
         $location->update($request->all());
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'location_code');
+        }
 
         return redirect()->route('locations.index')->with('success', 'Location updated successfully.');
     }
@@ -74,10 +94,18 @@ class LocationController extends Controller
      */
     public function destroy(Request $request)
     {
+        DB::enableQueryLog();
+        
         $id                     = $request->id;
         $location                = $location = Location::findOrFail($id);       
         $location->save();
         $location->delete();
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        }
 
         return Response::json($location);
     }

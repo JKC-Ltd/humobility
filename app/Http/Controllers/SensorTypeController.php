@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gateway;
 use App\Models\SensorType;
-use App\Models\SensorLog;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
 use Response;
 use Illuminate\Validation\Rule;
@@ -41,9 +43,18 @@ class SensorTypeController extends Controller
         $sensorTypeArray = implode(',', $request->sensor_type_parameter);
 
         $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
+        
         $sensorType = new SensorType($request->all());
         $sensorType->sensor_type_parameter = $sensorTypeArray;
         $sensorType->save();
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'sensor_type_code');
+        }
 
         return redirect()->route('sensorTypes.index')->with('success', 'Sensor Type created successfully.');
     }
@@ -79,9 +90,16 @@ class SensorTypeController extends Controller
         $sensorType->sensor_type_parameter = $sensorTypeArray;
         $requestData = $request->all();
         $requestData['sensor_type_parameter'] = $sensorTypeArray;
+        
+        DB::enableQueryLog();
 
         $sensorType->update($requestData);
 
+        $gateways = Gateway::all();
+        
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'sensor_type_code');
+        }
 
 
         return redirect()->route('sensorTypes.index')->with('success', 'Location updated successfully.');
@@ -92,11 +110,19 @@ class SensorTypeController extends Controller
      */
     public function destroy(Request $request)
     {
+        DB::enableQueryLog();
 
         $id = $request->id;
         $sensorType = $sensorType = SensorType::findOrFail($id);
         $sensorType->save();
         $sensorType->delete();
+        
+        $gateways = Gateway::all();
+        
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        }
+
 
         return Response::json($sensorType);
     }
