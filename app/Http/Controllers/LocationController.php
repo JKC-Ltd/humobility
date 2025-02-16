@@ -83,7 +83,7 @@ class LocationController extends Controller
         $gateways = Gateway::all();
 
         foreach ($gateways as $key => $gateway) {
-            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'location_code');
+            (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id, 'location_code');
         }
 
         return redirect()->route('locations.index')->with('success', 'Location updated successfully.');
@@ -112,8 +112,8 @@ class LocationController extends Controller
     public function formRule($id = false)
     {
         return [
-            'location_code' => ['required','string','min:3','max:200',Rule::unique('locations')->ignore($id ? $id : "")],
-            'location_name' => ['required','string','min:3','max:200']
+            'location_code' => ['required','string','min:2','max:200',Rule::unique('locations')->ignore($id ? $id : "")],
+            'location_name' => ['required','string','min:2','max:200']
         ];
     }
     public function errorMessage()

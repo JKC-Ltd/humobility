@@ -122,7 +122,7 @@ class SensorController extends Controller
     public function formRule()
     {
         return [
-            'slave_address' => ['required', 'string', 'min:3', 'max:200'],
+            'slave_address' => ['required', 'string', 'min:1', 'max:200'],
             'description' => ['required', 'string', 'min:3', 'max:500'],
             'location_id' => 'required',
             'gateway_id' => 'required',
