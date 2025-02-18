@@ -142,7 +142,5 @@ window.onload = function () {
         }
 
     }
-    chart.render();
-}
 
-$.getJSON("https://canvasjs.com/data/gallery/php/bitcoin-price.json", addData);
+}
