@@ -72,6 +72,8 @@ window.onload = function () {
         var chart = new CanvasJS.Chart(consumptionType, {
             animationEnabled: true,
             theme: "light2",
+            exportEnabled: true,
+            zoomEnabled: true,
             title: {
                 text: "Daily Energy Consumption - SIIX EMS: All Meters",
                 fontSize: 20,
@@ -92,7 +94,7 @@ window.onload = function () {
                 margin: 30,
                 labelFontSize: 12,
                 interval: 1,
-                intervalType: "month",
+                // intervalType: "month",
             },
             legend: {
                 cursor: "pointer",
@@ -100,89 +102,49 @@ window.onload = function () {
                 itemclick: toggleDataSeries,
                 fontSize: 15
             },
-            // rangeSelector: {
-            //     height: 100,
-            //     buttons: {
-            //         label: "1Month",
-            //         range: 1,
-            //         rangeType: "month"
-            //     },
-            // },
-            data: [{
-                type: "column",
-                name: "Test1",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints1
-            }, {
-                type: "column",
-                name: "test2",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints2
-            }, {
-                type: "column",
-                name: "test3",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints3
-            }, {
-                type: "column",
-                name: "test4",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints4
-            }, {
-                type: "column",
-                name: "test5",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints5
-            }, {
-                type: "column",
-                name: "test6",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints6
-            }, {
-                type: "column",
-                name: "test7",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints7
-            }, {
-                type: "column",
-                name: "test8",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints8
-            }, {
-                type: "column",
-                name: "test9",
-                // indexLabel: "{y}",
-                // yValueFormatString: "$#0.##",
-                showInLegend: true,
-                dataPoints: dataPoints9
-            }]
+            data: sensorEnergyConsumption
         });
         chart.render();
+
+        function toggleDataSeries(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else {
+                e.dataSeries.visible = true;
+            }
+            chart.render();
+        }
     }
 
-
-    function toggleDataSeries(e) {
-        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-            e.dataSeries.visible = false;
-        } else {
-            e.dataSeries.visible = true;
-        }
+    function energyConsumptionPerMeter() {
+        var chart = new CanvasJS.Chart("dailyEnergyConsumptionPerMeter", {
+            animationEnabled: true,
+            exportEnabled: true,
+            theme: "light1", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: "Daily Energy Consumption Per Meter",
+                fontSize: 20,
+                margin: 30
+            },
+            axisY: {
+                includeZero: true
+            },
+            data: sensorEnergyConsumptionPerMeter
+        });
         chart.render();
+
+        // setInterval(function () {
+        //     sensorEnergyConsumptionPerMeter[0].dataPoints.push(
+        //         { label: 'test', y: 20 }
+        //     );
+        //     chart.render(); // Re-render the chart to reflect the new data points
+        // }, 1000);
+
+        // setInterval(function () {
+
+        //     let existingSensor = sensorEnergyConsumptionPerMeter[0].dataPoints.find(sensor => sensor.label === 'PP-Canteen');
+        //     existingSensor.y += 10;
+        //     chart.render(); // Re-render the chart to reflect the new data points
+        // }, 1000);
     }
 }
