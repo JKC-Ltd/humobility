@@ -55,18 +55,18 @@
             <section class="col-8 connectedSortable">
                 <div class="card">
                     <div class="card-body text-center">
-                        <h6>Monthly Consumption</h6>
-                        <h1 style="font-size: 6rem; font-weight: 600;">210</h1>
-                        <i>kWh / month</i>
+                        <h6>Total kWh Consumption - All Meters</h6>
+                        <h1 style="font-size: 6rem; font-weight: 600;" id="totalEneryConsumption">300</h1>
+                        <i>kWh</i>
                     </div>
                 </div>
             </section>
             <section class="col-4 connectedSortable">
                 <div class="card">
                     <div class="card-body text-center">
-                        <h6>Total kWh Consumption - All Meters</h6>
-                        <h1 style="font-size: 6rem; font-weight: 600;">300</h1>
-                        <i>kWh</i>
+                        <h6>Monthly Consumption</h6>
+                        <h1 style="font-size: 6rem; font-weight: 600;">210</h1>
+                        <i>kWh / month</i>
                     </div>
                 </div>
             </section>
@@ -77,7 +77,7 @@
             <section class="col-12 connectedSortable">
                 <div class="card">
                     <div class="card-body">
-                        <div id="dailyEnergyConsumption" style="height: 520px; width: 100%;"></div>
+                        <div id="dailyEnergyConsumptionAllMeters" style="height: 520px; width: 100%;"></div>
                     </div>
                 </div>
             </section>
@@ -87,7 +87,7 @@
             <section class="col-12 connectedSortable">
                 <div class="card">
                     <div class="card-body">
-                        <div id="monthlyEnergyConsumption" style="height: 520px; width: 100%;"></div>
+                        <div id="dailyEnergyConsumptionPerMeter" style="height: 520px; width: 100%;"></div>
                     </div>
                 </div>
             </section>

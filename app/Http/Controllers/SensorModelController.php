@@ -83,7 +83,7 @@ class SensorModelController extends Controller
         $gateways = Gateway::all();
 
         foreach ($gateways as $key => $gateway) {
-            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'sensor_model');
+            (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id);
         }
 
         return redirect()->route('sensorModels.index')->with('success', 'Sensor Model updated successfully.');

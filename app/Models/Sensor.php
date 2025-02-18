@@ -30,6 +30,10 @@ class Sensor extends Model
     {
         return $this->belongsTo(SensorRegister::class);
     }
-
+    
+    public function sensorLogs()
+    {
+        return $this->hasMany(SensorLog::class);
+    }
 
 }

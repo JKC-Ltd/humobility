@@ -52,7 +52,7 @@ class SensorRegisterController extends Controller
         $gateways = Gateway::all();
 
         foreach ($gateways as $key => $gateway) {
-            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id);
+            (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id);
         }
 
         return redirect()->route('sensorRegisters.index')->with('success', 'Sensor Register created successfully.');

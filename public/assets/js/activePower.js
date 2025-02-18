@@ -1,41 +1,146 @@
+window.onload = function () {
 
-// Active Power Profile
+    let chart = null;
+    let activePowerProfile = [];
+    const currentProfile = ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c'];
 
-var dataPoints = [];
+    multiSeriesVoltageAndCurrent();
 
-var chart = new CanvasJS.Chart("activePowerProfile", {
-    animationEnabled: true,
-    theme: "light2",
-    zoomEnabled: true,
-    title: {
-        text: "Active Power Profile - SIIX EMS: PP Canteen"
-    },
-    axisX: {
-        labelAngle: -90,
-        margin: 30,
-        labelFontSize: 12,
-        interval: 1,
-        intervalType: "month",
-    },
-    // axisY: {
-    //     title: "Price in USD",
-    //     titleFontSize: 24,
-    //     prefix: "$"
-    // },
-    data: [{
-        type: "line",
-        yValueFormatString: "$#,##0.00",
-        dataPoints: dataPoints
-    }]
-});
+    $('.nav-link').on('click', function () {
+        let activePowerProfileDataId = $(this).data('id');
+        let activePowerProfileDataKey = $(this).data('key');
 
-function addData(data) {
-    var dps = data.price_usd;
-    for (var i = 0; i < dps.length; i++) {
-        dataPoints.push({
-            x: new Date(dps[i][0]),
-            y: dps[i][1]
+        $('.sensorSelection').remove();
+        $('.spinner').attr('hidden', false);
+
+        $.ajax({
+            url: '/getActivePowerProfile',
+            type: 'GET',
+            data: {
+                sensor_id: activePowerProfileDataKey
+            },
+            success: function (data) {
+
+                currentProfile.forEach(data => {
+                    activePowerProfile.push({
+                        type: "line",
+                        name: `${data}`,
+                        showInLegend: true,
+                        markerSize: 2,
+                        dataPoints: []
+                    });
+                });
+
+                currentProfile.forEach(currentProfileData => {
+                    data.forEach(item => {
+                        let existingSensor = activePowerProfile.find(sensor => sensor.name === currentProfileData)
+                        const newDate = new Date(item.date_created);
+                        const formattedDate = newDate.toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        });
+                        existingSensor.dataPoints.push({
+                            label: formattedDate,
+                            y: item[currentProfileData]
+                        });
+
+                    });
+                });
+
+                let activePowerProfileChart = {
+                    animationEnabled: true,
+                    theme: "light2",
+                    zoomEnabled: true,
+                    title: {
+                        text: `Voltage & Current Profile - ${data[0].gateway.customer_code} EMS: ${data[0].description}`,
+                    },
+                    axisX: {
+                        labelAngle: -90,
+                        margin: 30,
+                        labelFontSize: 12,
+                        interval: 1,
+                    },
+                    toolTip: {
+                        shared: true
+                    },
+                    legend: {
+                        cursor: "pointer",
+                        horizontalAlign: "center",
+                        itemclick: toogleDataSeries
+                    },
+                    data: activePowerProfile,
+                };
+
+                voltageAndCurrentProfile(activePowerProfileDataId, activePowerProfileChart)
+            }
         });
+    });
+
+    function toogleDataSeries(e) {
+        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+        } else {
+            e.dataSeries.visible = true;
+        }
+        chart.render();
+    }
+
+    function voltageAndCurrentProfile(activePowerProfileDataId, activePowerProfileChart) {
+        setTimeout(function () {
+            chart = new CanvasJS.Chart(activePowerProfileDataId, activePowerProfileChart);
+            chart.render();
+            $('.spinner').attr('hidden', true);
+        }, 800);
+
+    }
+
+
+    // Active Power Profile per Sensors
+
+    function multiSeriesVoltageAndCurrent() {
+
+        let chart = new CanvasJS.Chart('multiSeriesVoltageAndCurrent', {
+            title: {
+                text: "House Median Price"
+            },
+            axisX: {
+                labelAngle: -90,
+                margin: 30,
+                labelFontSize: 12,
+                interval: 1,
+            },
+            toolTip: {
+                shared: true
+            },
+            legend: {
+                cursor: "pointer",
+                horizontalAlign: "center",
+                itemclick: toogleDataSeries2
+            },
+            data: [{
+                type: "line",
+                axisYType: "secondary",
+                name: "San Fransisco",
+                showInLegend: true,
+                markerSize: 0,
+                dataPoints: [
+                    { label: '2024-08-24', y: 850 },
+                    { label: '2024-08-25', y: 889 },
+                ]
+            },]
+        });
+        chart.render();
+
+        function toogleDataSeries2(e) {
+            if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else {
+                e.dataSeries.visible = true;
+            }
+            chart.render();
+        }
+
     }
     chart.render();
 }

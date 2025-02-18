@@ -20,25 +20,25 @@ class SensorOfflineService
         }, $query);
 
         // Extract columns from the query
-        preg_match_all('/`(\w+)`/', $query, $matches);
-        $columns = $matches[1];
-        array_shift($columns); // Remove the first element (table name)
+        // preg_match_all('/`(\w+)`/', $query, $matches);
+        // $columns = $matches[1];
+        // array_shift($columns); // Remove the first element (table name)
 
         // Generate ON DUPLICATE KEY UPDATE clause
-        $updateClause = [];
-        foreach ($columns as $column) {
-            if ($column !== $uniqueColumn) { // Exclude unique column
-                $updateClause[] = "`$column` = VALUES(`$column`)";
-            }
-        }
-        $finalQuery .= ' ON DUPLICATE KEY UPDATE ' . implode(', ', $updateClause);
+        // $updateClause = [];
+        // foreach ($columns as $column) {
+        //     if ($column !== $uniqueColumn) { // Exclude unique column
+        //         $updateClause[] = "`$column` = VALUES(`$column`)";
+        //     }
+        // }
+        // $finalQuery .= ' ON DUPLICATE KEY UPDATE ' . implode(', ', $updateClause);
 
 
         $this->sensorOfflineAction($id, $finalQuery);
 
     }
 
-    public function update($queryLog, $id, $uniqueColumn)
+    public function update($queryLog, $id)
     {
         $query = $queryLog[0]['query'];
         $bindings = $queryLog[0]['bindings'];

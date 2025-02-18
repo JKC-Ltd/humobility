@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <!-- Main row -->
+        {{-- <!-- Main row -->
         <div class="row">
             <section class="col-8 connectedSortable">
                 <div class="card">
@@ -70,10 +70,10 @@
                     </div>
                 </div>
             </section>
-        </div>
+        </div> --}}
 
 
-        <div class="row">
+        {{-- <div class="row">
             <section class="col-12 connectedSortable">
                 <div class="card">
                     <div class="card-body">
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </section>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-12">
@@ -96,17 +96,31 @@
                             <div class="col-3 col-sm-2">
                                 <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist"
                                     aria-orientation="vertical">
-                                    <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill"
-                                        href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home"
-                                        aria-selected="true">Home</a>
+                                    @foreach ($sensors as $key => $sensor)
+                                        <a class="nav-link "
+                                            id="vert-tabs-{{ $sensor->id }}-tab" data-toggle="pill"
+                                            href="#vert-tabs-{{ $sensor->id }}" role="tab"
+                                            aria-controls="vert-tabs-{{ $sensor->id }}" aria-selected="true"
+                                            data-id="activePowerProfile{{ $sensor->id }}"
+                                            data-key="{{ $sensor->id }}">{{ $sensor->description }}</a>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="col-9 col-sm-10">
                                 <div class="tab-content" id="vert-tabs-tabContent">
-                                    <div class="tab-pane text-left fade active show" id="vert-tabs-home" role="tabpanel"
-                                        aria-labelledby="vert-tabs-home-tab">
-                                        <div id="activePowerProfile" style="height: 370px; width: 100%;"></div>
-                                    </div>
+                                    @foreach ($sensors as $key => $sensor)
+                                        <div class="tab-pane text-left fade "
+                                            id="vert-tabs-{{ $sensor->id }}" role="tabpanel"
+                                            aria-labelledby="vert-tabs-{{ $sensor->id }}-tab">
+                                            {{-- {{ $sensor->description }} --}}
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="activePowerProfile{{ $sensor->id }}"
+                                                        style="height: 370px; width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -119,6 +133,6 @@
     <x-slot name="importedScripts">
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-        <script src="{{ asset('assets/js/charts.js') }}"></script>
+        <script src="{{ asset('assets/js/voltageCurrent.js') }}"></script>
     </x-slot>
 </x-app-layout>

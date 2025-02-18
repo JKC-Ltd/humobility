@@ -95,7 +95,7 @@ class SensorController extends Controller
         DB::enableQueryLog();
         $sensor->update($request->all());
 
-        (new SensorOfflineService())->store(DB::getQueryLog(), $sensor->gateway_id);
+        (new SensorOfflineService())->update(DB::getQueryLog(), $sensor->gateway_id);
 
         return redirect()->route('sensors.index');
 

@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('sensors', SensorController::class);
     Route::resource('gateways', GatewayController::class);
 
+    Route::get('/getEnergyConsumption', [EnergyConsumptionController::class, 'getEnergyConsumption']);
+    Route::get('/getActivePowerProfile', [ActivePowerController::class, 'getActivePowerProfile']);
 
     // Route::get('/locations', function () {
     //     return view('pages/configurations.locations.index');

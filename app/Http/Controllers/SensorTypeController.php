@@ -98,7 +98,7 @@ class SensorTypeController extends Controller
         $gateways = Gateway::all();
         
         foreach ($gateways as $key => $gateway) {
-            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'sensor_type_code');
+            (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id);
         }
 
 

@@ -1,27 +1,3 @@
-function getRandomY() {
-    return Math.floor(Math.random() * (250 - 50 + 1)) + 50;
-}
-
-const labels = [
-    'December 30, 2024', 'December 31, 2024', 'January 1, 2025', 'January 2, 2025', 'January 3, 2025',
-    'January 4, 2025', 'January 5, 2025', 'January 6, 2025', 'January 7, 2025', 'January 8, 2025',
-    'January 9, 2025', 'January 10, 2025', 'January 11, 2025', 'January 12, 2025', 'January 13, 2025',
-    'January 14, 2025', 'January 15, 2025', 'January 16, 2025', 'January 17, 2025', 'January 18, 2025',
-    'January 19, 2025', 'January 20, 2025', 'January 21, 2025', 'January 22, 2025', 'January 23, 2025',
-    'January 24, 2025', 'January 25, 2025', 'January 26, 2025', 'January 27, 2025', 'January 28, 2025',
-    'January 29, 2025', 'January 30, 2025'
-];
-
-const dataPoints1 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints2 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints3 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints4 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints5 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints6 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints7 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints8 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-const dataPoints9 = labels.slice(-30).map(label => ({ label, y: getRandomY() }));
-
 window.onload = function () {
 
 
