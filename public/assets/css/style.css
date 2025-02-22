@@ -33,6 +33,12 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+.nav-link.active {
+    background-color: #cc9504 !important;
+    color: #fff;
+}
+
+
 /* aside.main-sidebar {
     background-color: #e5ebe7;
 }
