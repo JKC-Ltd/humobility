@@ -45,6 +45,7 @@ class SensorModelController extends Controller
         DB::enableQueryLog();
 
         $sensor_model = new SensorModel($request->all());
+        $sensor_model->sensor_reg_address = implode(',', $request->sensor_reg_address);
         $sensor_model->save();
 
         $gateways = Gateway::all();
@@ -119,6 +120,8 @@ class SensorModelController extends Controller
         return [
             'sensor_model' => ['required', 'string', 'min:3', 'max:200', Rule::unique('sensor_models')->ignore($id ? $id : '')],
             'sensor_brand' => ['required', 'string', 'min:3', 'max:200'],
+            'sensor_type_id' => 'required|string',
+            // 'sensor_reg_address' => 'required|string',
         ];
     }
     public function errorMessage()

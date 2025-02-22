@@ -29,6 +29,8 @@
                                     <th>ID</th>
                                     <th>Sensor Model</th>
                                     <th>Sensor Brand</th>
+                                    <th>Sensor Type</th>
+                                    <th>Sensor Reg Address</th>
                                     <th>Last Update</th>
                                     <th>Actions</th>
                                 </tr>
@@ -39,6 +41,8 @@
                                         <td>{{ $sensor_model->id }}</td>
                                         <td>{{ $sensor_model->sensor_model }}</td>
                                         <td>{{ $sensor_model->sensor_brand }}</td>
+                                        <td>{{ $sensor_model->sensorType->description }}</td>
+                                        <td>{{ $sensor_model->sensor_reg_address }}</td>
                                         <td>{{ $sensor_model->updated_at }}</td>
                                         <td>
                                             <div class="btn-group">

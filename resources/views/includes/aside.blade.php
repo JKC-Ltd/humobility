@@ -91,12 +91,12 @@
                                 <p>Sensor Model</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="/sensorRegisters" class="nav-link {{ request()->is('sensorRegisters') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Register</p>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
             </ul>

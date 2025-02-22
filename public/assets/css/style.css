@@ -38,7 +38,11 @@
     color: #fff;
 }
 
-
+div#sensor-reg-address {
+    margin-left: 30px;
+    background: #f4f6f9;
+    padding: 20px;
+}
 /* aside.main-sidebar {
     background-color: #e5ebe7;
 }
