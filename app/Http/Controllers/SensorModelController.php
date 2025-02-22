@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gateway;
 use App\Models\SensorModel;
+use App\Models\SensorType;
 use App\Services\SensorOfflineService;
 use DB;
 use Illuminate\Http\Request;
@@ -28,7 +29,9 @@ class SensorModelController extends Controller
      */
     public function create()
     {
-        return view('pages.configurations.sensorModels.form');
+        $sensorTypes = SensorType::all();
+
+        return view('pages.configurations.sensorModels.form', compact('sensorTypes'));
 
     }
 
@@ -66,7 +69,9 @@ class SensorModelController extends Controller
      */
     public function edit(SensorModel $sensorModel)
     {
-        return view('pages.configurations.sensorModels.form', compact('sensorModel'));
+        $sensorTypes = SensorType::all();
+
+        return view('pages.configurations.sensorModels.form', compact('sensorTypes', 'sensorModel'));
     }
 
     /**
@@ -129,5 +134,12 @@ class SensorModelController extends Controller
             'sensor_model' => 'Sensor Model',
             'sensor_brand' => 'Sensor Brand',
         ];
+    }
+
+    public function getSensorType($id) 
+    {
+        $sensorType = SensorType::find($id);
+        
+        return Response::json($sensorType);
     }
 }

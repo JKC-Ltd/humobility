@@ -11,5 +11,12 @@ class SensorModel extends Model
     protected $fillable = [
         'sensor_model',
         'sensor_brand',
+        'sensor_type_id',
+        'sensor_reg_address',
     ];
+
+    public function sensorType() 
+    {
+        return $this->belongsTo(SensorType::class);
+    }
 }

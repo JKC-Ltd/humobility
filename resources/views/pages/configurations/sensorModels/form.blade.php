@@ -34,18 +34,36 @@
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="sensor_type">Sensor Type</label>
+                                        <select id="sensor_type" class="form-control select2bs4 @error('sensor_type_id') input-error @enderror" name="sensor_type_id" style="width: 100%">
+                                            <option value=""  selected disabled>Select Sensor Type</option>
+                                            @foreach($sensorTypes as $sensorType)
+                                                <option value="{{ $sensorType->id }}" {{isset ($sensorModel) ? ($sensorType->id == $sensorModel->sensor_type_id ? "selected" : '') : '' }}> {{ $sensorType->description }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('sensor_type_id')
+                                                <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div id="sensor-reg-address"></div>
+                                    <div id="input-sensor-reg-address"><input</div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="{{ route('sensorModels.index') }}"><button type="button"
+                            <a href="{{ route('sensorModels.index') }}"><button type="button" 
                                     class="btn btn-danger">Cancel</button></a>
-                            <button type="submit"
+                            <button type="submit" id="btnSubmit"
                                 class="btn btn-primary">{{ isset($sensorModel) ? 'Update' : 'Create' }}</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+    </x-slot>
+    <x-slot name="importedScripts">
+        <script src="{{ asset('assets/js/sensorModel.js') }}"></script>
     </x-slot>
 </x-app-layout>

@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('sensors', SensorController::class);
     Route::resource('gateways', GatewayController::class);
 
+    Route::get('/getSensorType/{id}', [SensorModelController::class, 'getSensorType']);
     Route::get('/getEnergyConsumption', [EnergyConsumptionController::class, 'getEnergyConsumption']);
     Route::get('/getActivePowerProfile', [ActivePowerController::class, 'getActivePowerProfile']);
 
