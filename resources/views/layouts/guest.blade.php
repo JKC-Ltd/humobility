@@ -24,7 +24,6 @@
             <div class="col-md-4 d-flex align-items-center justify-content-center">
                 <div class="login-form">
                     <img src="{{ asset('assets/images/SmartPower-logo.png') }}" class="login-logo">
-                    <h1>ENERGY MANAGEMENT SYSTEM</h1>
                     {{ $slot }}
                 </div>
             </div>

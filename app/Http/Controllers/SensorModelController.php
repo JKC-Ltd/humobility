@@ -80,10 +80,17 @@ class SensorModelController extends Controller
      */
     public function update(Request $request, SensorModel $sensorModel)
     {
+        
+  
         $request->validate(self::formRule($sensorModel->id), self::errorMessage(), self::changeAttributes());
 
         DB::enableQueryLog();
 
+        $request->merge([
+            'sensor_reg_address' => implode(',', (array)$request->sensor_reg_address)
+        ]);
+        
+        // dd($request->sensor_reg_address);
         $sensorModel->update($request->all());
 
         $gateways = Gateway::all();
@@ -149,7 +156,16 @@ class SensorModelController extends Controller
     public function getSensorModel($id) 
     {
         $sensorModel = SensorModel::find($id);
-        // dd($sensorModel);
-        return Response::json($sensorModel);     
+        if ($sensorModel) {
+            $sensorType = $sensorModel->sensorType;
+
+            return response()->json([
+                'sensor_model' => $sensorModel,
+                'sensor_type' => $sensorType 
+            ]);
+
+        }
+        
+        
     }
 }

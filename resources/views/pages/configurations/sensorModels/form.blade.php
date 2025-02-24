@@ -47,8 +47,9 @@
                                                 <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div id="sensor-reg-address"></div>
-                                    <div id="input-sensor-reg-address"><input</div>
+                                    {{-- <div id="sensor-reg-address" data-sensor-model="{{ $sensorModel->id }}"></div> --}}
+                                    <div id="sensor-reg-address" {{ isset($sensorModel) ? "data-sensor-model=" . $sensorModel->id : "" }}>
+                                    </div>
                                 </div>
                             </div>
                         </div>
