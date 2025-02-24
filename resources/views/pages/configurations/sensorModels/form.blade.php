@@ -48,6 +48,7 @@
                                         @enderror
                                     </div>
                                     <div id="sensor-reg-address"></div>
+                                    <div id="input-sensor-reg-address"><input</div>
                                 </div>
                             </div>
                         </div>

@@ -145,4 +145,11 @@ class SensorModelController extends Controller
         
         return Response::json($sensorType);
     }
+
+    public function getSensorModel($id) 
+    {
+        $sensorModel = SensorModel::find($id);
+        // dd($sensorModel);
+        return Response::json($sensorModel);     
+    }
 }

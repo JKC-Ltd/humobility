@@ -13,6 +13,7 @@ use App\Http\Controllers\SensorRegisterController;
 use App\Http\Controllers\VoltageCurrentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,8 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('sensorRegisters', SensorRegisterController::class);
     Route::resource('sensors', SensorController::class);
     Route::resource('gateways', GatewayController::class);
+    Route::resource('users', UserController::class);
 
     Route::get('/getSensorType/{id}', [SensorModelController::class, 'getSensorType']);
+    Route::get('/getSensorModel/{id}', [SensorModelController::class, 'getSensorModel']);
     Route::get('/getEnergyConsumption', [EnergyConsumptionController::class, 'getEnergyConsumption']);
     Route::get('/getActivePowerProfile', [ActivePowerController::class, 'getActivePowerProfile']);
 

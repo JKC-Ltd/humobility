@@ -39,7 +39,7 @@
                 </li>
                 <li class="nav-header">CONFIGURATIONS</li>
                 <li class="nav-item">
-                    <a href="/users" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
+                    <a href="{{ route('users.index')}}" class="nav-link {{ request()->is('users') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-users"></i>
                         <p>
                             Users
@@ -91,7 +91,7 @@
                                 <p>Sensor Model</p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="/sensorRegisters" class="nav-link {{ request()->is('sensorRegisters') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sensor Register</p>
