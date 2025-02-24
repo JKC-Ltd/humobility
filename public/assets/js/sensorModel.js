@@ -1,39 +1,38 @@
 $(document).ready(function () {
     var sensorModelId = $("#sensor-reg-address").data("sensor-model");
     if (sensorModelId) {
-        var sensorTypeId = "";
+        var sensorTypeId = $("#sensor_type").val();
         loadSensorModel(sensorModelId, sensorTypeId);
+
         $("#sensor_type").on("change", function () {
             sensorTypeId = $(this).val();
             if (sensorTypeId) {
                 loadSensorModel(sensorModelId, sensorTypeId);
             } 
         });
-    } 
+    } else {
+        $("#sensor_type").on("change", function () {
+            sensorTypeId = $(this).val();
+            if (sensorTypeId) {
+                loadSensorParameters(sensorTypeId);
+            } 
+        });
+    }
     
 });
-
-// $("#sensor_type").on("change", function () {
-//     var sensorTypeId = $(this).val();
-//     var sensorRegAddress
-//     var test = loadSensorModel(sensorModelId);
-//     console.log(test);
-//     var sensorRegAddressValue = sensorRegAddress || [];
-
-//     if (sensorTypeId) {
-
-//         loadSensorParameters(sensorTypeId, sensorRegAddressValue);
-//     } 
-// });
 
 function loadSensorModel(sensorModelId, sensorTypeId){
     $.ajax({
         url: "/getSensorModel/" + sensorModelId,
         method: "GET",
         success: function (response) {
-            console.log(sensorTypeId);
-            var sensorRegAddress = response.sensor_model.sensor_reg_address;
-            var sensorTypeId = sensorTypeId || response.sensor_type.id;    
+            var sensorRegAddress;
+            if (sensorTypeId == response.sensor_type.id) {
+                sensorRegAddress = response.sensor_model.sensor_reg_address;
+            } else {
+                sensorRegAddress = "";
+            }
+            sensorTypeId = sensorTypeId || response.sensor_type.id;    
             loadSensorParameters(sensorTypeId, sensorRegAddress);
         },
         error: function () {
@@ -41,15 +40,6 @@ function loadSensorModel(sensorModelId, sensorTypeId){
         },
     });
 }
-// $("#sensor_type").on("change", function () {
-//     var sensorTypeId = $(this).val();
-//     var sensorRegAddressValue = $('input[name="sensor_reg_address[]"]').val();
-//     if (sensorTypeId) {
-//         // loadSensorParameters(sensorTypeId, existingSensorRegAddresses);
-        
-//         loadSensorParameters(sensorTypeId, sensorRegAddressValue);
-//     }
-// });
 
 function loadSensorParameters(sensorTypeId, sensorRegAddress) {
     $.ajax({
@@ -63,6 +53,7 @@ function loadSensorParameters(sensorTypeId, sensorRegAddress) {
 
             parameters.forEach(function (parameter, index) {
                 var value = regAddress[index] || '';
+
                 htmlContent += `
                 <div class="form-group row">
                     <label for=${parameter} class="col-sm-5 col-form-label">${parameter.replace(/_/g, " ").toUpperCase()}</label>
