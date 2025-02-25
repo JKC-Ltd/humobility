@@ -74,6 +74,37 @@ span.badge {
     background-color: #2e3495;
 }
 
+
+li.user-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #2e3495;
+    color: #FFF;
+}
+
+li.user-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.circle-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #d1d1d1;
+    color: #000;
+    font-size: 25px; /* Font size for initials */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
 /* aside.main-sidebar {
     background-color: #e5ebe7;
 }

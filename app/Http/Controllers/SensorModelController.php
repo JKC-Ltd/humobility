@@ -165,7 +165,5 @@ class SensorModelController extends Controller
             ]);
 
         }
-        
-        
     }
 }

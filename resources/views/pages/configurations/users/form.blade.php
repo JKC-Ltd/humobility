@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="pageTitle">
-        {{ isset($user) ? 'Edit ' : 'Create ' }} Sensors
+        {{ isset($user) ? 'Edit ' : 'Create ' }} Users
     </x-slot>
     <x-slot name="content">
         <div class="row">
@@ -36,7 +36,7 @@
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
 
-                                        <label>USER TYPE</label>
+                                        <label>User Type</label>
                                         <select
                                             class="form-control select2bs4 @error('user_type_id') input-error @enderror"
                                             name="user_type_id" style="width: 100%;">
@@ -76,7 +76,7 @@
                                 <button type="button" class="btn btn-danger">Cancel</button>
                             </a>
                             <button type="submit"
-                                class="btn btn-primary">{{ isset($sensor) ? 'Update' : 'Create' }}</button>
+                                class="btn btn-primary">{{ isset($user) ? 'Update' : 'Create' }}</button>
                         </div>
                     </form>
                 </div>
