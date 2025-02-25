@@ -43,6 +43,37 @@ div#sensor-reg-address {
     background: #f4f6f9;
     padding: 20px;
 }
+
+/* Card */
+.card-details {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+#sensor_details .card-header {
+    background-color: #2e3495 !important;
+}
+.card-details .fas {
+    padding-right: 5px;
+}
+.card-details span {
+    padding-bottom: 1rem;
+}
+
+.separator {
+    border-top: 1px solid #9d9d9d;
+    padding-bottom: 1.25rem;
+}
+span.badge {
+    font-size: 1rem;
+    padding: 8px;
+    margin: 3px;
+    font-weight: normal;
+}
+.badge-primary {
+    background-color: #2e3495;
+}
+
 /* aside.main-sidebar {
     background-color: #e5ebe7;
 }

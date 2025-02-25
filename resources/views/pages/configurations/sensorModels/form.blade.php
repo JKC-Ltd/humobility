@@ -50,6 +50,34 @@
                                     {{-- <div id="sensor-reg-address" data-sensor-model="{{ $sensorModel->id }}"></div> --}}
                                     <div id="sensor-reg-address" {{ isset($sensorModel) ? "data-sensor-model=" . $sensorModel->id : "" }}>
                                     </div>
+                                    
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="card card-primary" id="sensor_details" style="display: none;">
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                Sensor Type Details
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card-details">
+                                                <p><strong><i class="fas fa-microchip"></i>Sensor Type Code</strong> </p>
+                                                <span id="sensor_code"></span>
+                                            </div>
+                                            <div class="separator"></div>
+                                            <div class="card-details">
+                                                <p><strong><i class="fas fa-file-alt"></i>Description</strong> </p>
+                                                <span id="sensor_description"></span>
+                                            </div>
+                                            <div class="separator"></div>
+                                            <div class="card-details">
+                                                <p><strong><i class="fas fa-sliders-h"></i>Sensor Type Parameter</strong> </p>
+                                                <span id="sensor_parameters"></span>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -66,5 +94,14 @@
     </x-slot>
     <x-slot name="importedScripts">
         <script src="{{ asset('assets/js/sensorModel.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+    
+                $('.select2bs4').select2({
+                        theme: 'bootstrap4'
+                })
+                
+            });
+        </script>
     </x-slot>
 </x-app-layout>

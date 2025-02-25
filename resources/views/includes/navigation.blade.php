@@ -12,7 +12,7 @@
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
-                Hi,
+                Hi, {{ Auth::user()->firstname; }}
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <form method="POST" action="{{ route('logout') }}">

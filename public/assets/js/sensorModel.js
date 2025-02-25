@@ -3,23 +3,55 @@ $(document).ready(function () {
     if (sensorModelId) {
         var sensorTypeId = $("#sensor_type").val();
         loadSensorModel(sensorModelId, sensorTypeId);
+        loadSensorDetails(sensorTypeId);
 
         $("#sensor_type").on("change", function () {
             sensorTypeId = $(this).val();
             if (sensorTypeId) {
                 loadSensorModel(sensorModelId, sensorTypeId);
+                loadSensorDetails(sensorTypeId);
             } 
+
         });
     } else {
         $("#sensor_type").on("change", function () {
             sensorTypeId = $(this).val();
             if (sensorTypeId) {
                 loadSensorParameters(sensorTypeId);
+                loadSensorDetails(sensorTypeId);
             } 
         });
     }
     
 });
+
+function loadSensorDetails (sensorTypeId) {
+    $.ajax({
+        url: '/getSensorType/' + sensorTypeId,
+        method: 'GET',
+        success: function(response) {
+            $('#sensor_details').show();
+            
+            $('#sensor_code').text(response.sensor_type_code);
+            $('#sensor_description').text(response.description);
+
+            var parameters = response.sensor_type_parameter.split(",");
+            var htmlContent = "";
+
+            parameters.forEach(param=> {
+                param = param.trim();
+                htmlContent += `<span class="badge badge-primary">${param}</span>`;
+            });
+
+            $("#sensor_parameters").html(htmlContent);
+         
+        },
+        error: function () {
+            alert("Error fetching sensor data.");
+        },
+    });
+
+}
 
 function loadSensorModel(sensorModelId, sensorTypeId){
     $.ajax({
