@@ -19,11 +19,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [EnergyConsumptionController::class, 'index'])
+Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
 
+    Route::resource('energyConsumption', EnergyConsumptionController::class);
     Route::resource('activePower', ActivePowerController::class);
     Route::resource('voltageCurrent', VoltageCurrentController::class);
     Route::resource('locations', LocationController::class);
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/getSensorType/{id}', [SensorModelController::class, 'getSensorType']);
     Route::get('/getSensorModel/{id}', [SensorModelController::class, 'getSensorModel']);
     Route::get('/getEnergyConsumption', [EnergyConsumptionController::class, 'getEnergyConsumption']);
+    Route::get('/getEnergyConsumptionBasedOnDate', [DashboardController::class, 'getEnergyConsumptionBasedOnDate']);
+    Route::get('/getEnergyConsumptionBasedOnHours', [DashboardController::class, 'getEnergyConsumptionBasedOnHours']);
     Route::get('/getActivePowerProfile', [ActivePowerController::class, 'getActivePowerProfile']);
 
     // Route::get('/locations', function () {

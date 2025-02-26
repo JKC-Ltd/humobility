@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gateway;
 use App\Models\Sensor;
 use App\Models\User;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Response;
@@ -14,13 +15,9 @@ class ActivePowerController extends Controller
     public function index()
     {
         $sensors = Sensor::all();
-        $gateways = Gateway::all();
-        $users = User::all();
 
-        return view('pages.activePower')
-            ->with('gateways', $gateways)
-            ->with('sensors', $sensors)
-            ->with('users', $users);
+        return view('pages.active-power')
+            ->with('sensors', $sensors);
 
     }
 
@@ -51,6 +48,7 @@ class ActivePowerController extends Controller
             ->leftJoin('gateways', 'gateways.id', '=', 'sensors.gateway_id')
             ->leftJoin('sensor_registers', 'sensor_registers.id', '=', 'sensors.sensor_register_id')
             ->leftJoin('sensor_logs', 'sensor_logs.sensor_id', '=', 'sensors.id')
+            // ->where('sensor_logs.datetime_created', '>=', Carbon::now()->subDays(15));
             ->whereRaw('HOUR(sensor_logs.datetime_created) = 9');
 
         if ($request->sensor_id) {

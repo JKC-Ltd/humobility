@@ -1,6 +1,6 @@
 window.onload = function () {
-
     let chart = null;
+
     let activePowerProfile = [];
     const currentProfile = ['voltage_ab', 'voltage_bc', 'voltage_ca', 'current_a', 'current_b', 'current_c'];
 
@@ -20,7 +20,7 @@ window.onload = function () {
                 sensor_id: activePowerProfileDataKey
             },
             success: function (data) {
-
+                activePowerProfile = [];
                 currentProfile.forEach(data => {
                     activePowerProfile.push({
                         type: "line",
@@ -87,6 +87,7 @@ window.onload = function () {
     }
 
     function voltageAndCurrentProfile(activePowerProfileDataId, activePowerProfileChart) {
+
         setTimeout(function () {
             chart = new CanvasJS.Chart(activePowerProfileDataId, activePowerProfileChart);
             chart.render();

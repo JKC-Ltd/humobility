@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Gateway;
 use App\Models\Sensor;
 use App\Models\User;
+use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
+use Response;
 
 class DashboardController extends Controller
 {
@@ -71,5 +74,71 @@ class DashboardController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getEnergyConsumptionBasedOnDate(Request $request)
+    {
+
+        $query = Sensor::with(['location', 'gateway', 'sensorRegister'])
+            ->select(
+                'sensors.*',
+                'locations.location_name as location_name',
+                'gateways.gateway_code',
+                'sensor_registers.sensor_reg_address',
+                'sensor_logs.energy',
+                'sensor_logs.datetime_created',
+                DB::raw("ROUND(sensor_logs.energy - LAG(sensor_logs.energy) OVER(
+                    PARTITION BY sensors.id 
+                    ORDER BY sensor_logs.datetime_created
+                ), 2) AS energy_difference"),
+                DB::raw('DATE(sensor_logs.datetime_created) AS date_created')
+            )
+            ->leftJoin('locations', 'locations.id', '=', 'sensors.location_id')
+            ->leftJoin('gateways', 'gateways.id', '=', 'sensors.gateway_id')
+            ->leftJoin('sensor_registers', 'sensor_registers.id', '=', 'sensors.sensor_register_id')
+            ->leftJoin('sensor_logs', 'sensor_logs.sensor_id', '=', 'sensors.id')
+            // ->whereRaw('HOUR(sensor_logs.datetime_created) = 9'); // Get the date on the 9th hour of the day
+            ->where('sensor_logs.datetime_created', '>=', Carbon::now()->subDays($request->days));
+
+        if ($request->sensor_id) {
+            $query->where('sensors.id', $request->sensor_id);
+        }
+
+        $energyConsumption = $query->groupBy('sensors.description', 'date_created')
+            ->orderBy('sensors.id')
+            ->orderBy('sensor_logs.datetime_created')
+            ->get();
+
+        return Response::json($energyConsumption);
+    }
+
+    public function getEnergyConsumptionBasedOnHours(Request $request)
+    {
+
+        $query = Sensor::select(
+            'sensor_logs.datetime_created',
+            DB::raw("ROUND(sensor_logs.energy - LAG(sensor_logs.energy) OVER(
+                    PARTITION BY sensors.id 
+                    ORDER BY sensor_logs.datetime_created
+                ), 2) AS energy_difference"),
+            DB::raw('HOUR(sensor_logs.datetime_created) AS date_hours')
+        )
+            ->leftJoin('locations', 'locations.id', '=', 'sensors.location_id')
+            ->leftJoin('gateways', 'gateways.id', '=', 'sensors.gateway_id')
+            ->leftJoin('sensor_registers', 'sensor_registers.id', '=', 'sensors.sensor_register_id')
+            ->leftJoin('sensor_logs', 'sensor_logs.sensor_id', '=', 'sensors.id')
+            // ->whereRaw('HOUR(sensor_logs.datetime_created) = 9'); // Get the date on the 9th hour of the day
+            ->where('sensor_logs.datetime_created', '>=', Carbon::now()->subHours(363));
+
+        if ($request->sensor_id) {
+            $query->where('sensors.id', $request->sensor_id);
+        }
+
+        $energyConsumption = $query->groupBy('date_hours')
+            ->orderBy('sensors.id')
+            ->orderBy('sensor_logs.datetime_created')
+            ->get();
+
+        return Response::json($energyConsumption);
     }
 }

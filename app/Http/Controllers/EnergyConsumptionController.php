@@ -14,14 +14,7 @@ class EnergyConsumptionController extends Controller
 {
     public function index()
     {
-        $gateways = Gateway::all();
-        $sensors = Sensor::all();
-        $users = User::all();
-
-        return view('pages.dashboard')
-            ->with('gateways', $gateways)
-            ->with('sensors', $sensors)
-            ->with('users', $users);
+        return view('pages.energy-consumption');
     }
 
     public function getEnergyConsumption(Request $request)
@@ -44,8 +37,8 @@ class EnergyConsumptionController extends Controller
             ->leftJoin('gateways', 'gateways.id', '=', 'sensors.gateway_id')
             ->leftJoin('sensor_registers', 'sensor_registers.id', '=', 'sensors.sensor_register_id')
             ->leftJoin('sensor_logs', 'sensor_logs.sensor_id', '=', 'sensors.id')
-            ->whereRaw('HOUR(sensor_logs.datetime_created) = 9'); // More efficient filtering
-            // ->where('sensor_logs.datetime_created', '>=', Carbon::now()->subDays(31)); 
+            ->whereRaw('HOUR(sensor_logs.datetime_created) = 9'); // Get the date on the 9th hour of the day
+        // ->where('sensor_logs.datetime_created', '>=', Carbon::now()->subDays(31)); 
 
         if ($request->sensor_id) {
             $query->where('sensors.id', $request->sensor_id);
@@ -57,5 +50,5 @@ class EnergyConsumptionController extends Controller
             ->get();
 
         return Response::json($energyConsumption);
-    } 
+    }
 }

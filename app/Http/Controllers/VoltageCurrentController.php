@@ -12,7 +12,7 @@ class VoltageCurrentController extends Controller
 
         $sensors = Sensor::all();
 
-        return view('pages.voltageCurrent')
+        return view('pages.voltage-current')
             ->with('sensors', $sensors);
 
     }
