@@ -43,7 +43,7 @@
                                             <td>{{ $gateway->gateway }}</td>
                                             <td>{{ $gateway->gateway_code }}</td>
                                             <td>{{ $gateway->description }}</td>
-                                            <td>{{ $gateway->updated_at->diffForHumans() }}</td>
+                                            <td>{{ $gateway->updated_at }}</td>
                                             <td>
                                                 <form action="{{ route('gateways.destroy', $gateway->id) }}"
                                                     method="POST">
@@ -56,7 +56,10 @@
                                                             </button>
                                                         </a>
 
-                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                        <button type="button"
+                                                            class="btn btn-danger btn-sm delete-data-info"
+                                                            data-name="{{ $gateway->gateway }}"
+                                                            data-id="{{ $gateway->id }}" data-url="gateways/destroy">
                                                             <i class="fa fa-trash"></i> Delete
                                                         </button>
                                                     </div>
@@ -79,5 +82,7 @@
     <x-slot name="importedScripts">
         @include('includes.datatables-scripts')
         <script src="{{ asset('assets/js/datatables.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ asset('/assets/js/sweetalert-delete.js') }}"></script>
     </x-slot>
 </x-app-layout>

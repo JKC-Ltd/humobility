@@ -41,7 +41,7 @@
                                         <td>{{ $sensorType->description }}</td>
                                         <td>{{ $sensorType->sensor_type_code }}</td>
                                         <td>{{ $sensorType->sensor_type_parameter }}</td>
-                                        <td>{{ $sensorType->updated_at->diffForHumans() }}</td>
+                                        <td>{{ $sensorType->updated_at }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <a href="{{ route('sensorTypes.edit', $sensorType->id) }}">
@@ -49,7 +49,9 @@
                                                         <i class="fa fa-pen"></i> Edit
                                                     </button>
                                                 </a>
-                                                <button class="btn btn-danger btn-sm">
+                                                <button type="button" class="btn btn-danger btn-sm delete-data-info"
+                                                    data-name="{{ $sensorType->sensor_type_code }}"
+                                                    data-id="{{ $sensorType->id }}" data-url="sensorTypes/destroy">
                                                     <i class="fa fa-trash"></i> Delete
                                                 </button>
                                             </div>
@@ -66,7 +68,8 @@
     <x-slot name="importedScripts">
         @include('includes.datatables-scripts')
         <script src="{{ asset('assets/js/datatables.js') }}"></script>
-        <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ asset('./assets/js/sweetalert-delete.js') }}"></script>
         <script>
             $(function() {
                 var Toast = Swal.mixin({

@@ -1,3 +1,4 @@
+/* FORM VALIDATION */
 .card-footer .btn {
     min-width: 150px;
 }
@@ -9,3 +10,108 @@
     color: red;
     font-size: 15px; 
 }
+.delete-name{
+    color: red;
+}
+/* SIDE BAR */
+.brand-link {
+    background: #fff;
+}
+.sidebar {
+    /* background-image: linear-gradient(to top left, #cc972a, #272971 60%); */
+    background: #2e3494;
+}
+.logged-user {
+    display: block;
+}
+.logged-user .image, .logged-user .info{
+    text-align: center;
+}
+.logged-user .image img {
+    width: 80px;
+    height: 80px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.nav-link.active {
+    background-color: #cc9504 !important;
+    color: #fff;
+}
+
+div#sensor-reg-address {
+    margin-left: 30px;
+    background: #f4f6f9;
+    padding: 20px;
+}
+
+/* Card */
+.card-details {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+#sensor_details .card-header {
+    background-color: #2e3495 !important;
+}
+.card-details .fas {
+    padding-right: 5px;
+}
+.card-details span {
+    padding-bottom: 1rem;
+}
+
+.separator {
+    border-top: 1px solid #9d9d9d;
+    padding-bottom: 1.25rem;
+}
+span.badge {
+    font-size: 1rem;
+    padding: 8px;
+    margin: 3px;
+    font-weight: normal;
+}
+.badge-primary {
+    background-color: #2e3495;
+}
+
+
+li.user-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: #2e3495;
+    color: #FFF;
+}
+
+li.user-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.circle-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #d1d1d1;
+    color: #000;
+    font-size: 25px; /* Font size for initials */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* aside.main-sidebar {
+    background-color: #e5ebe7;
+}
+aside.main-sidebar a.nav-link {
+    color: #343a40;
+}
+
+aside.main-sidebar a.nav-link:hover {
+    color: #cd9502 !important;
+} */

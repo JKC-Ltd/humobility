@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SensorType extends Model
 {
-    protected $fillable = ['sensor_type_code', 'description', 'sensor_type_parameter'];
+    use SoftDeletes;
+        protected $fillable = ['sensor_type_code', 'description', 'sensor_type_parameter'];
 }

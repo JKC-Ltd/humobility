@@ -29,6 +29,8 @@
                                     <th>ID</th>
                                     <th>Sensor Model</th>
                                     <th>Sensor Brand</th>
+                                    <th>Sensor Type</th>
+                                    <th>Sensor Reg Address</th>
                                     <th>Last Update</th>
                                     <th>Actions</th>
                                 </tr>
@@ -39,15 +41,19 @@
                                         <td>{{ $sensor_model->id }}</td>
                                         <td>{{ $sensor_model->sensor_model }}</td>
                                         <td>{{ $sensor_model->sensor_brand }}</td>
-                                        <td>{{ $sensor_model->updated_at->diffForHumans() }}</td>
+                                        <td>{{ $sensor_model->sensorType->description }}</td>
+                                        <td>{{ $sensor_model->sensor_reg_address }}</td>
+                                        <td>{{ $sensor_model->updated_at }}</td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="{{ route('sensorModels.edit', $sensor_model->id) }}">
+                                                <a href="{{ route('sensorModels.edit', $sensor_model) }}">
                                                     <button class="btn btn-primary btn-sm">
                                                         <i class="fa fa-pen"></i> Edit
                                                     </button>
                                                 </a>
-                                                <button class="btn btn-danger btn-sm">
+                                                <button type="button" class="btn btn-danger btn-sm delete-data-info"
+                                                    data-name="{{ $sensor_model->sensor_model }}"
+                                                    data-id="{{ $sensor_model->id }}" data-url="sensorModels/destroy">
                                                     <i class="fa fa-trash"></i> Delete
                                                 </button>
                                             </div>
@@ -64,7 +70,8 @@
     <x-slot name="importedScripts">
         @include('includes.datatables-scripts')
         <script src="{{ asset('assets/js/datatables.js') }}"></script>
-        <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
+        <script src="{{ asset('./assets/js/sweetalert-delete.js') }}"></script>
         <script>
             $(function() {
                 var Toast = Swal.mixin({

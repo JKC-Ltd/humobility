@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gateway;
 use App\Models\SensorRegister;
 use App\Models\SensorType;
 use App\Models\SensorModel;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
+use Response;
+use Illuminate\Validation\Rule;
 
 class SensorRegisterController extends Controller
 {
@@ -27,7 +32,7 @@ class SensorRegisterController extends Controller
         $sensorTypes = SensorType::all();
         $sensorModels = SensorModel::all();
 
-        return view('pages.configurations.sensorRegisters.create', compact('sensorTypes', 'sensorModels'));
+        return view('pages.configurations.sensorRegisters.form', compact('sensorTypes', 'sensorModels'));
 
     }
 
@@ -36,16 +41,19 @@ class SensorRegisterController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
 
-        $validated = $request->validate([
-            'sensor_model_id' => 'required',
-            'sensor_type_id' => 'required', 
-            'sensor_reg_address' => 'required|string',              
-        ]);
+        DB::enableQueryLog();
 
         $sensorRegister = new SensorRegister($request->all());
-        
+
         $sensorRegister->save();
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id);
+        }
 
         return redirect()->route('sensorRegisters.index')->with('success', 'Sensor Register created successfully.');
     }
@@ -66,7 +74,7 @@ class SensorRegisterController extends Controller
         $sensorTypes = SensorType::all();
         $sensorModels = SensorModel::all();
 
-        return view('pages.configurations.sensorRegisters.create', compact('sensorRegister','sensorTypes', 'sensorModels'));
+        return view('pages.configurations.sensorRegisters.form', compact('sensorRegister', 'sensorTypes', 'sensorModels'));
     }
 
     /**
@@ -74,7 +82,17 @@ class SensorRegisterController extends Controller
      */
     public function update(Request $request, SensorRegister $sensorRegister)
     {
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+
+        DB::enableQueryLog();
+
         $sensorRegister->update($request->all());
+
+        $gateways = Gateway::all();
+
+        foreach ($gateways as $key => $gateway) {
+            (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id);
+        }
 
         return redirect()->route('sensorRegisters.index')->with('success', 'Location updated successfully.');
     }
@@ -82,8 +100,47 @@ class SensorRegisterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SensorRegister $sensorRegister)
+    public function destroy(Request $request)
     {
-        //
+        // DB::enableQueryLog();
+
+        $id = $request->id;
+        $sensorRegister = $sensorRegister = SensorRegister::findOrFail($id);
+        $sensorRegister->save();
+        $sensorRegister->delete();
+
+        // $gateways = Gateway::all();
+
+        // foreach ($gateways as $key => $gateway) {
+        //     (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        // }
+
+
+        return Response::json($sensorRegister);
+    }
+    public function formRule()
+    {
+        return [
+            'sensor_model_id' => 'required',
+            'sensor_type_id' => 'required',
+            'sensor_reg_address' => 'required|string',
+        ];
+    }
+
+    public function errorMessage()
+    {
+        return [
+            'sensor_model_id.required' => 'Sensor Model is required',
+            'sensor_type_id.required' => 'Sensor Type is required',
+            'sensor_reg_address.required' => 'Sensor Register Address is required',
+        ];
+    }
+    public function changeAttributes()
+    {
+        return [
+            'sensor_model_id' => 'Sensor Model',
+            'sensor_type_id' => 'Sensor Type',
+            'sensor_reg_address' => 'Sensor Register Address',
+        ];
     }
 }

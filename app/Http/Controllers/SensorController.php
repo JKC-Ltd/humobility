@@ -8,7 +8,11 @@ use App\Models\Gateway;
 use App\Models\SensorRegister;
 use App\Models\SensorType;
 use App\Models\SensorModel;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
+use Auth;
+use Response;
 
 class SensorController extends Controller
 {
@@ -18,8 +22,8 @@ class SensorController extends Controller
     public function index()
     {
         $sensor = Sensor::all();
-        return view('pages.sensors.index')
-        ->with('sensors', $sensor);
+        return view('pages.configurations.sensors.index')
+            ->with('sensors', $sensor);
     }
 
     /**
@@ -27,13 +31,14 @@ class SensorController extends Controller
      */
     public function create()
     {
-        $location =  Location::all();
-        $gateway =  Gateway::all();
-        $SensorRegister =  SensorRegister::all();
-        return view('pages.sensors.form')
-        ->with('locations', $location)
-        ->with('gateways', $gateway)
-        ->with('sensorRegisters', $SensorRegister);
+        $location = Location::all();
+        $gateway = Gateway::all();
+        $sensorModels = SensorModel::all();
+
+        return view('pages.configurations.sensors.form')
+            ->with('locations', $location)
+            ->with('gateways', $gateway)
+            ->with('sensorModels', $sensorModels);
     }
 
     /**
@@ -41,16 +46,14 @@ class SensorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'slave_address' => 'required',
-            'description' => 'required',
-            'location_id' => 'required',
-            'gateway_id' => 'required',
-            'sensor_register_id' => 'required',
-        ]);
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+
+        DB::enableQueryLog();
 
         $sensor = new Sensor($request->all());
         $sensor->save();
+
+        (new SensorOfflineService())->store(DB::getQueryLog(), $request->gateway_id);
 
         return redirect()->route('sensors.index');
 
@@ -58,6 +61,7 @@ class SensorController extends Controller
 
     /**
      * Display the specified resource.
+
      */
     public function show(Sensor $sensor)
     {
@@ -69,15 +73,15 @@ class SensorController extends Controller
      */
     public function edit($id)
     {
-       $sensor = Sensor::find($id);
-       $location =  Location::all();
-       $gateway =  Gateway::all();
-       $SensorRegister =  SensorRegister::all();
-        return view('pages.sensors.form')
-        ->with('sensor', $sensor)
-        ->with('locations', $location)
-        ->with('gateways', $gateway)
-        ->with('sensorRegisters', $SensorRegister);
+        $sensor = Sensor::find($id);
+        $location = Location::all();
+        $gateway = Gateway::all();
+        $SensorRegister = SensorRegister::all();
+        return view('pages.configurations.sensors.form')
+            ->with('sensor', $sensor)
+            ->with('locations', $location)
+            ->with('gateways', $gateway)
+            ->with('sensorRegisters', $SensorRegister);
 
     }
 
@@ -87,14 +91,12 @@ class SensorController extends Controller
     public function update(Request $request, Sensor $sensor)
     {
 
-        $request->validate([
-            'slave_address' => 'required',
-            'description' => 'required',
-            'location_id' => 'required',
-            'gateway_id' => 'required',
-            'sensor_register_id' => 'required',
-        ]);
+        $request->validate(self::formRule(), self::errorMessage(), self::changeAttributes());
+        DB::enableQueryLog();
         $sensor->update($request->all());
+
+        (new SensorOfflineService())->update(DB::getQueryLog(), $sensor->gateway_id);
+
         return redirect()->route('sensors.index');
 
     }
@@ -102,9 +104,51 @@ class SensorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sensor $sensor)
+    public function destroy(Request $request)
     {
+
+        DB::enableQueryLog();
+
+        $id = $request->id;
+        $sensor = $sensor = Sensor::findOrFail($id);
+        $sensor->save();
         $sensor->delete();
-        return redirect()->route('sensors.index');
+
+        (new SensorOfflineService())->store(DB::getQueryLog(), $sensor->gateway_id);
+
+        return Response::json($sensor);
+    }
+
+    public function formRule()
+    {
+        return [
+            'slave_address' => ['required', 'string', 'min:1', 'max:200'],
+            'description' => ['required', 'string', 'min:3', 'max:500'],
+            'location_id' => 'required',
+            'gateway_id' => 'required',
+            'sensor_model_id' => 'required',
+        ];
+    }
+
+    public function errorMessage()
+    {
+        return [
+            'slave_address.required' => 'Slave Address is required',
+            'description.required' => 'Description is required',
+            'location_id.required' => 'Location is required',
+            'gateway_id.required' => 'Gateway is required',
+            'sensor_model_id.required' => 'Sensor Register is required',
+        ];
+    }
+
+    public function changeAttributes()
+    {
+        return [
+            'slave_address' => 'Slave Address',
+            'description' => 'Description',
+            'location_id' => 'Location',
+            'gateway_id' => 'Gateway',
+            'sensor_model_id' => 'Sensor Register',
+        ];
     }
 }

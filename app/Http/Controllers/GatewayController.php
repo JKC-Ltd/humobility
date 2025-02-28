@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Gateway;
 use App\Models\Location;
+use App\Services\SensorOfflineService;
+use DB;
 use Illuminate\Http\Request;
+use Response;
+use Illuminate\Validation\Rule;
 
 class GatewayController extends Controller
 {
@@ -25,7 +29,7 @@ class GatewayController extends Controller
     {   
         $locations = Location::all();
         // dd($locations);
-        return view('pages.configurations.gateways.create', compact('locations'));
+        return view('pages.configurations.gateways.form', compact('locations'));
     }
 
     /**
@@ -33,19 +37,16 @@ class GatewayController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'location_id' => 'required|exists:locations,id',
-            'customer_code' => 'required',
-            'gateway' => 'required',
-            'gateway_code' => 'required|unique:gateways,gateway_code',
-            'description' => 'max:150',
-
-        ]);
+        $request->validate( self::formRule(),self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
 
         $gateway = new Gateway($request->all());
         $gateway->save();
+        
+        (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'gateway_code');
 
-        return redirect()->route('gateways.index');
+        return redirect()->route('gateways.index')->with('success', 'Gateway created successfully.');
     }
 
     /**
@@ -62,7 +63,7 @@ class GatewayController extends Controller
     public function edit(Gateway $gateway)
     {
         $locations = Location::all();
-        return view('pages.configurations.gateways.create', compact('gateway'), compact('locations'));
+        return view('pages.configurations.gateways.form', compact('gateway'), compact('locations'));
     }
 
     /**
@@ -70,24 +71,67 @@ class GatewayController extends Controller
      */
     public function update(Request $request, Gateway $gateway)
     {
-        $request->validate([
-            'location_id' => 'required|exists:locations,id',
-            'gateway_code' => 'required|unique:gateways,gateway_code,' . $gateway->id,
-
-        ]);
+        $request->validate( self::formRule($gateway->id),self::errorMessage(), self::changeAttributes());
+        
+        DB::enableQueryLog();
 
         $gateway->update($request->all());
+        
+        (new SensorOfflineService())->update(DB::getQueryLog(), $gateway->id, 'gateway_code');
 
-        return redirect()->route('gateways.index');
+        return redirect()->route('gateways.index')->with('success', 'Gateway updated successfully.');
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Gateway $gateway)
+    public function destroy(Request $request)
     {
+       
+        DB::enableQueryLog();
+
+        $id                     = $request->id;
+        $gateway                = $gateway = Gateway::findOrFail($id);       
+        $gateway->save();
         $gateway->delete();
-        return redirect()->route('gateways.index');
+        
+        (new SensorOfflineService())->delete(DB::getQueryLog(), $gateway->id);
+        
+        return Response::json($gateway);
+    }
+
+    public function formRule($id = false)
+    {
+        return [
+            'location_id' => ['required','exists:locations,id'],
+            'gateway_code' => ['required','string',Rule::unique('gateways')->ignore($id ? $id : "")],
+            'customer_code' => ['required'],
+            'gateway' => ['required','string'],
+            'description' => ['required','string','max:500'],
+        ];
+    }
+    public function errorMessage()
+    {
+        return [
+            'location_id.required' => 'Location is required',
+            'location_id.exists' => 'Location does not exist',
+            'gateway_code.required' => 'Gateway code is required',
+            'gateway_code.unique' => 'Gateway code already exists',
+            'customer_code.required' => 'Customer code is required',
+            'gateway.required' => 'Gateway is required',
+            'description.max' => 'Description is too long',
+            
+        ];
+    }
+    public function changeAttributes()
+    {
+        return [
+            'location_id' => 'Location',
+            'gateway_code' => 'Gateway Code',
+            'customer_code' => 'Customer Code',
+            'gateway' => 'Gateway',
+            'description' => 'Description',
+        ];
     }
 }
