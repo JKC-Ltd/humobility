@@ -121,7 +121,7 @@
                     <div class="card-body">
                         <div class="row" style="height: 370px; width: 100%;">
                             @foreach ($sensors as $sensor)
-                                <div class="col-md-4">
+                                <div class="col col-12">
                                     <div class="info-box bg-primary">
                                         <div class="info-box-content">
                                             <span class="info-box-text">{{ $sensor->description }}</span>
