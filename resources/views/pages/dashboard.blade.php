@@ -15,7 +15,7 @@
                     <div class="icon">
                         <i class="ion ion-bag"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{route('gateways.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -30,7 +30,7 @@
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{route('sensors.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -45,7 +45,7 @@
                     <div class="icon">
                         <i class="ion ion-person-add"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="{{route('users.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                     <div class="card-body">
                         <div class="row" style="height: 370px; width: 100%;">
                             @foreach ($sensors as $sensor)
-                                <div class="col-md-4">
+                                <div class="col col-12">
                                     <div class="info-box bg-primary">
                                         <div class="info-box-content">
                                             <span class="info-box-text">{{ $sensor->description }}</span>
@@ -177,6 +177,6 @@
     <x-slot name="importedScripts">
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
         <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
-        <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+        <script src="{{ asset('dist/js/pages/main.js') }}"></script>
     </x-slot>
 </x-app-layout>

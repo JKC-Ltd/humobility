@@ -45,6 +45,8 @@ class LocationController extends Controller
 
         $gateways = Gateway::all();
 
+        dd(DB::getQueryLog());
+
         foreach ($gateways as $key => $gateway) {
             (new SensorOfflineService())->store(DB::getQueryLog(), $gateway->id, 'location_code');
         }

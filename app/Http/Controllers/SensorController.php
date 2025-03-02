@@ -33,12 +33,12 @@ class SensorController extends Controller
     {
         $location = Location::all();
         $gateway = Gateway::all();
-        $sensorRegisters = SensorRegister::all();
+        $sensorModels = SensorModel::all();
 
         return view('pages.configurations.sensors.form')
             ->with('locations', $location)
             ->with('gateways', $gateway)
-            ->with('sensorRegisters', $sensorRegisters);
+            ->with('sensorModels', $sensorModels);
     }
 
     /**
@@ -126,7 +126,7 @@ class SensorController extends Controller
             'description' => ['required', 'string', 'min:3', 'max:500'],
             'location_id' => 'required',
             'gateway_id' => 'required',
-            'sensor_register_id' => 'required',
+            'sensor_model_id' => 'required',
         ];
     }
 
@@ -137,7 +137,7 @@ class SensorController extends Controller
             'description.required' => 'Description is required',
             'location_id.required' => 'Location is required',
             'gateway_id.required' => 'Gateway is required',
-            'sensor_register_id.required' => 'Sensor Register is required',
+            'sensor_model_id.required' => 'Sensor Register is required',
         ];
     }
 
@@ -148,7 +148,7 @@ class SensorController extends Controller
             'description' => 'Description',
             'location_id' => 'Location',
             'gateway_id' => 'Gateway',
-            'sensor_register_id' => 'Sensor Register',
+            'sensor_model_id' => 'Sensor Register',
         ];
     }
 }

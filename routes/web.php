@@ -14,6 +14,7 @@ use App\Http\Controllers\VoltageCurrentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,6 +42,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/getEnergyConsumptionBasedOnDate', [DashboardController::class, 'getEnergyConsumptionBasedOnDate']);
     Route::get('/getEnergyConsumptionBasedOnHours', [DashboardController::class, 'getEnergyConsumptionBasedOnHours']);
     Route::get('/getActivePowerProfile', [ActivePowerController::class, 'getActivePowerProfile']);
+    Route::get('/getVoltageCurrentProfile', [VoltageCurrentController::class, 'getVoltageCurrentProfile']);
+
+    Route::get('/db-check', function () {
+        try {
+            DB::connection()->getPdo();
+            return "Database connected successfully!";
+        } catch (\Exception $e) {
+            return "Database connection failed: " . $e->getMessage();
+        }
+    });
+
 
     // Route::get('/locations', function () {
     //     return view('pages/configurations.locations.index');
